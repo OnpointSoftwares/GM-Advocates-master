@@ -1,0 +1,47 @@
+.page-header-bg {
+  width: 100vw;
+  height: 250px;
+  background: url("../assets/universe.jpg") no-repeat center center/cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #024677;
+  background: linear-gradient(
+    to right,
+    rgb(199, 66, 199) 0%,
+    rgb(199, 66, 199) 10%,
+    transparent 10%,
+    transparent 90%,
+    rgb(199, 66, 199) 90%,
+    rgb(199, 66, 199) 100%
+  );
+}
+
+.page-header-bg h1 {
+  font-size: 3rem;
+  font-weight: 600;
+  padding-top: 2rem;
+  margin-bottom: 1.5rem;
+  color: #fff;
+}
+
+@media screen and (max-width: 1024px) {
+  .page-header-bg {
+    height: 200px;
+  }
+
+  .page-header-bg h1 {
+    font-size: 2.5rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .page-header-bg {
+    height: 150px;
+  }
+
+  .page-header-bg h1 {
+    font-size: 2rem;
+  }
+}

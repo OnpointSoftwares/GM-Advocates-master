@@ -1,0 +1,183 @@
+#careers-page {
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.careersTitle {
+  color: #024677;
+  font-size: 3rem;
+  font-weight: 600;
+  padding-top: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.careers-content {
+  color: #024677;
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  background: #dcdcdc;
+}
+
+.main-area {
+  width: 100%;
+  padding: 2rem;
+}
+
+.horizontal-bar {
+  width: 50px;
+  height: 4px;
+  background-color: #024677;
+  margin: 0 auto 1rem auto;
+}
+
+.main-area-text {
+  text-align: left;
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.img-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.img {
+  object-fit: cover;
+  height: 15rem;
+  width: 100%;
+  max-width: 65rem;
+  border-radius: 15px;
+}
+
+.focus-areas {
+  width: 100%;
+  padding: 2rem;
+  background-color: #f9f9f9;
+}
+
+.focus-area {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.focus-area i {
+  color: #1c71ad;
+  margin-right: 0.5rem;
+}
+
+.focus-area h7 {
+  color: #024677;
+  font-weight: bold;
+}
+
+.vacancies {
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.v-title {
+  color: #024677;
+}
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, 0.01fr);
+  gap: 0.5rem;
+}
+
+.card-container {
+  margin: 1rem;
+}
+
+.vacancy-card {
+  width: 300px;
+  padding: 20px;
+  margin: 20px auto;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.vacancy-card:hover {
+  background: #dcdcdc;
+}
+
+.vacancy-card h3 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.vacancy-card p {
+  margin: 0;
+  font-size: 16px;
+  color: #555;
+}
+.vacancy-card .job {
+  color: #024677;
+  font-size: 22px;
+}
+.vacancy-card .job-type {
+  color: #555;
+  font-size: 16px;
+  font-weight: bold;
+}
+@media screen and (max-width: 1024px) {
+  .careers-content {
+    flex-direction: column;
+  }
+  .main-area h1,
+  .v-title {
+    padding: 1rem 0;
+    font-size: xx-large;
+  }
+}
+@media (max-width: 768px) {
+  .main-area-text {
+    font-size: 0.9rem;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: repeat(1, 0.01fr);
+    gap: 0.5rem;
+  }
+
+  .img {
+    height: 12rem;
+  }
+
+  .focus-area h7 {
+    font-size: 0.9rem;
+  }
+
+  .vacancy h2 {
+    font-size: 1.3rem;
+  }
+
+  .vacancy p {
+    font-size: 0.9rem;
+  }
+}
+@media screen and (max-width: 480px) {
+  .main-area h1,
+  .v-title {
+    padding: 1rem 0;
+    font-size: x-large;
+  }
+}

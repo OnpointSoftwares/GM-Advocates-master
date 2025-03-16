@@ -1,0 +1,24 @@
+.top-bg {
+  height: 35vh;
+  width: 100vw;
+  background: linear-gradient(0deg, rgba(2, 6, 252, 0.3), rgba(2, 6, 252, 0.3)),
+    url("../../assets/universe.jpg");
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+}
+.top-bg h {
+  font-weight: bolder;
+  color: white;
+  font-size: 3rem;
+}
+
+@media screen and (max-width: 768px) {
+  .top-bg h {
+    font-size: 2rem;
+  }
+}

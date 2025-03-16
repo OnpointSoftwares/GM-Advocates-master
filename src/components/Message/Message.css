@@ -1,0 +1,143 @@
+.message {
+  width: 100vw;
+  margin: 0 auto;
+  overflow: hidden;
+  align-items: center;
+  justify-content: space-evenly;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+.header {
+  align-items: center;
+  justify-content: space-evenly;
+  display: flex;
+  flex-direction: column;
+}
+.header h1 {
+  color: #024677;
+  font-weight: bold;
+}
+
+.content {
+  width: 100%;
+  align-items: center;
+  justify-content: space-evenly;
+  display: flex;
+  flex-direction: row;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 30rem;
+  border-radius: 15px;
+  background-color: white;
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.3);
+  height: auto;
+}
+.success-response {
+  background-color: #1ca55c;
+  border-radius: 5px;
+  width: fit-content;
+  padding: 10px;
+  color: white;
+  font-weight: 800;
+}
+.error-response {
+  background-color: #a72312;
+  border-radius: 5px;
+  width: fit-content;
+  padding: 10px;
+  color: white;
+  font-weight: 800;
+}
+
+.msgtext {
+  width: 30rem;
+  height: auto;
+}
+.msgtext h {
+  color: #024677;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.contactForm {
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.name,
+.email,
+.msg {
+  font-size: medium;
+  width: 100%;
+  max-width: 40rem;
+  margin: 0.5rem 0;
+  padding: 0.5rem 1rem;
+  color: black;
+  border: 1px solid grey;
+  border-radius: 0.5rem;
+}
+.name:focus,
+.email:focus,
+.msg:focus {
+  border: 2px solid #007bff;
+  outline: none;
+}
+
+.submitBtn {
+  color: white;
+  background: #024677;
+  border: none;
+  border-radius: 0.5rem;
+  margin: 2rem;
+  width: 100%;
+  padding: 0.75rem 0;
+  transition: transform 0.3s ease-in-out;
+}
+.submitBtn:hover {
+  transform: scale(1.05);
+}
+.links {
+  display: flex;
+  flex-wrap: wrap;
+}
+.link {
+  object-fit: cover;
+  height: 3rem;
+  margin: 0 0.75rem;
+}
+@media screen and (max-width: 1200px) {
+  .msgtext h {
+    font-size: large;
+  }
+  .msgtext,
+  .form {
+    width: 25rem;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .msgtext,
+  .form {
+    width: 20rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  .content {
+    justify-content: space-evenly;
+    display: flex;
+    flex-direction: column;
+  }
+  .msgtext h {
+    font-size: large;
+  }
+  .form,
+  .msgtext {
+    margin-top: 1rem;
+    width: 80vw;
+  }
+}

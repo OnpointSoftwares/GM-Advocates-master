@@ -1,0 +1,49 @@
+#practise-area {
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0 auto;
+}
+.practiseTitle {
+  color: #024677;
+
+  font-size: 3rem;
+  font-weight: 600;
+  padding-top: 2rem;
+  margin-bottom: 1.5rem;
+}
+.practise-area-cards {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100vw;
+  max-width: 65rem;
+}
+.practise-area-card {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding: 0.5rem;
+}
+.practise-area-img {
+  object-fit: cover;
+  height: 15rem;
+  width: 18rem;
+  border-radius: 15px;
+}
+.areaTitle {
+  color: #024677;
+  font-weight: bold;
+  padding-top: 1.3rem;
+}
+.cardLink {
+  padding-top: 1.3rem;
+  color: #1c71ad;
+  cursor: pointer;
+}

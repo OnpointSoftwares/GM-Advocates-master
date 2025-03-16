@@ -1,0 +1,108 @@
+/* Dashboard Container */
+.admin-dashboard {
+    display: flex;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+
+
+
+
+/* Main Content Wrapper */
+.dashboard-content {
+    flex-grow: 1;
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    transition: margin-left 0.3s ease-in-out;
+}
+
+
+
+/* Dashboard Content Section */
+.dashboard-section {
+    margin-top: 70px;
+    padding: 20px;
+    overflow-y: auto;
+    height: calc(100vh - 70px);
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.dashboard-card:hover {
+    transform: scale(1.03);
+}
+
+/* Table Styling */
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.dashboard-table th,
+.dashboard-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.dashboard-table th {
+    background-color: #1abc9c;
+    color: #ffffff;
+}
+
+/* Button Styling */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: #ffffff;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    color: #ffffff;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+/* Dark Mode Support */
+.dark-mode {
+    background-color: #181818;
+    color: #ffffff;
+}
+
+.dark-mode .sidebar {
+    background-color: #222;
+}
+
+.dark-mode .admin-navbar {
+    background-color: #333;
+}
+
+.dark-mode .dashboard-card {
+    background: #222;
+    color: #ffffff;
+}

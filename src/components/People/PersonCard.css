@@ -1,0 +1,56 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: fit-content;
+  width: 22rem;
+  padding-bottom: 1rem;
+  margin: 17px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+.card img {
+  width: 22rem;
+  height: 24rem;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.profile-pic:hover {
+  opacity: 0.7;
+}
+
+.info {
+  text-align: center;
+}
+.info .person-name {
+  color: #024677;
+  font-weight: bold;
+  padding: 0.6rem 0;
+}
+.position {
+  color: #024677;
+  margin-top: 5px;
+}
+
+.view-more {
+  padding: 1rem 0;
+  color: #007bff;
+}
+
+.view-more:hover {
+  color: #024677;
+  text-decoration: none;
+  font-weight: bolder;
+}
+
+@media screen and (max-width: 768px) {
+  .card {
+    width: 18rem;
+  }
+
+  .card img {
+    width: 18rem;
+    height: 22rem;
+  }
+}

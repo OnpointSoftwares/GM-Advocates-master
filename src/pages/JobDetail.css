@@ -1,0 +1,38 @@
+.description-container {
+  width: 50vw;
+  margin: 2rem auto;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+.description {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.description h1 {
+  color: #024677;
+  font-size: 20px;
+  font-weight: bold;
+}
+.description p {
+  text-align: justify;
+  color: #555;
+}
+.description span {
+  color: #024677;
+}
+@media screen and (max-width: 1200px) {
+  .description-container {
+    width: 70vw;
+  }
+}
+@media screen and (max-width: 768px) {
+  .description-container {
+    width: 70vw;
+  }
+}
+@media screen and (max-width: 480px) {
+  .description-container {
+    width: 70vw;
+  }
+}

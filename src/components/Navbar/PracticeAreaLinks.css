@@ -1,0 +1,35 @@
+.menus {
+  width: fit-content;
+  background: #000435;
+  top: 3vh;
+  height: 43vh;
+  overflow-y: scroll;
+
+  padding-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+
+  text-align: left;
+}
+.menu-link {
+  color: white;
+  padding: 0.5rem 0.3rem;
+  font-size: medium;
+}
+.menu-link:hover {
+  text-decoration: none;
+  background: gray;
+  color: white;
+}
+@media screen and (max-width: 920px) {
+  .menus {
+    background: white;
+    width: 100%;
+    padding: 0 1rem;
+  }
+  .menu-link {
+    color: #024677;
+    padding: 0.25rem 0;
+    width: fit-content;
+  }
+}

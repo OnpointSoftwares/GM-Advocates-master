@@ -1,0 +1,126 @@
+.navbar {
+  background: #000435;
+  height: fit-content;
+  width: 100vw;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+.name-logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.logo {
+  object-fit: cover;
+  height: 6rem;
+  width: 6rem;
+}
+.desktopMenu {
+  padding: 0 3vw;
+  display: flex;
+  flex-direction: row;
+}
+
+.desktopMenuListItem,
+.desktopMenu .practise-area-links {
+  margin: 1rem 1rem 1rem 1rem;
+  cursor: pointer;
+  font-size: large;
+  color: white;
+}
+.desktopMenu .navlink {
+  cursor: pointer;
+  font-size: large;
+  color: white;
+}
+
+.desktopMenuListItem:hover {
+  text-decoration: none;
+
+  color: white;
+  border-bottom: 2px solid rgb(199, 66, 199);
+}
+
+.active {
+  color: rgb(199, 66, 199);
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid rgb(199, 66, 199);
+}
+.mobMenu {
+  display: none;
+}
+.closeBtn,
+.mobMenu i {
+  font-size: xx-large;
+  font-weight: bold;
+  color: white;
+}
+.navMenu {
+  position: absolute;
+  top: 4rem;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 0.9rem;
+  padding-left: 2rem;
+  max-height: 80vh;
+  width: 100%;
+  overflow-y: scroll;
+  background: white;
+  border-radius: 1rem;
+}
+.listItem,
+.pract-link {
+  color: #024677;
+  padding: 0.25rem 0;
+  width: fit-content;
+}
+.listItem:hover {
+  text-decoration: none;
+  border-bottom: 2px solid rgb(199, 66, 199);
+}
+.contact-scroll {
+  color: #024677;
+}
+.pract-link {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.pract-link i {
+  padding-left: 1rem;
+  font-size: x-large;
+}
+
+@media screen and (max-width: 1024px) {
+  .navbar {
+    padding: 0rem 1rem;
+  }
+  .desktopMenu {
+    padding: 0 3rem;
+  }
+}
+
+@media screen and (max-width: 1150px) {
+  .logo {
+    object-fit: cover;
+    height: 3rem;
+    width: 3rem;
+  }
+  .mobMenu {
+    display: flex;
+  }
+  .desktopMenu,
+  .ConsultationBtn {
+    display: none;
+  }
+}

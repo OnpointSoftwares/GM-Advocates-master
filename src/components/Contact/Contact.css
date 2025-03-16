@@ -1,0 +1,52 @@
+#contact {
+  height: 60vh;
+  width: 100vw;
+  margin: 0 auto;
+  overflow: hidden;
+  background: linear-gradient(0deg, rgba(2, 6, 252, 0.6), rgba(2, 6, 252, 0.6)),
+    url("../../assets/nairobi.jpeg");
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+h3 {
+  font-size: 1.5rem;
+  padding: 1rem 0;
+}
+h1 {
+  font-size: 3rem;
+}
+h2 {
+  font-size: 1.6rem;
+}
+.phone {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 1rem 0;
+}
+.phone i {
+  padding: 1rem;
+  font-size: 2rem;
+}
+@media screen and (max-width: 480px) {
+  h3 {
+    font-size: 1.2rem;
+    padding: 1rem 0;
+  }
+  h1 {
+    font-size: 2.4rem;
+  }
+  h2 {
+    font-size: 1.3rem;
+  }
+  .phone i {
+    padding: 0 1rem;
+    font-size: 1.5rem;
+  }
+}

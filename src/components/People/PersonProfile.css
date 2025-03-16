@@ -1,0 +1,163 @@
+/* General Styling */
+.person-profile {
+    background-color: #f4f6f9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   
+  }
+  
+  /* Profile Container */
+  .profile-container {
+    width: 85%;
+    max-width: 900px;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .profile-container:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Profile Image */
+  .profile-container img {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    object-fit: cover;
+    
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .profile-container img:hover {
+    transform: scale(1.1);
+  }
+ 
+  /* Name */
+  .profile-info h2 {
+    font-size: 26px;
+    color: #024677;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  /* Position */
+  .profile-info h4 {
+    font-size: 18px;
+    color: #007bff;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  /* Bio */
+  .profile-info p {
+    font-size: 16px;
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+  
+  /* Contact Info */
+  .profile-info p:last-child {
+    font-weight: bold;
+    color: #024677;
+  }
+  
+  /* Profile Buttons */
+  .profile-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+  }
+  
+  /* Go Back Button */
+  .go-back {
+    background: #007bff;
+    color: white;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .go-back:hover {
+    background: #0056b3;
+  }
+  
+  /* Close Profile Button */
+  .close-profile {
+    background: #dc3545;
+    color: white;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .close-profile:hover {
+    background: #b52b3a;
+  }
+  
+  /* Error Message */
+  .error {
+    color: red;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
+  /* Responsive Design */
+  @media screen and (max-width: 768px) {
+    .profile-container {
+      flex-direction: column;
+      text-align: center;
+      width: 95%;
+      padding: 30px;
+    }
+  
+    .profile-container img {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+    }
+  
+    .profile-info {
+      text-align: center;
+    }
+  
+    .profile-info h2 {
+      font-size: 22px;
+    }
+  
+    .profile-info h4 {
+      font-size: 16px;
+    }
+  
+    .profile-info p {
+      font-size: 14px;
+    }
+  
+    .profile-buttons {
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+  
+    .go-back,
+    .close-profile {
+      width: 100%;
+      padding: 12px;
+    }
+  }
+  

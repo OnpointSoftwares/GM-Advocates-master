@@ -1,0 +1,123 @@
+.home {
+  height: 80vh;
+  width: 100vw;
+  margin: 0 auto;
+  padding: 4vw;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url("../../assets/universe-bg.jpg");
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slide {
+  height: 80vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.slideimg {
+  width: 30vw;
+  height: auto;
+  object-fit: cover;
+}
+.slidecontent {
+  width: 25vw;
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
+}
+.slidecontent h {
+  font-size: x-large;
+}
+.slideBtn {
+  margin: 1rem 0;
+  width: fit-content;
+  border: 1px solid #024677;
+  background-color: #024677;
+  padding: 0.5rem 0.8rem;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.slideBtn:hover {
+  background: white;
+  color: #000435;
+  border: 1px solid white;
+  transform: scale(1.1);
+}
+.homeTitle {
+  color: white;
+}
+.horizontal-bar {
+  margin: 1.25rem 0;
+  width: 100px;
+  height: 3px;
+  background-color: rgb(199, 66, 199);
+}
+.homeText {
+  padding: 1.5rem 4rem;
+  font-size: large;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: aqua;
+}
+.value-item {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+}
+.value-item i {
+  color: #024677;
+  font-size: xx-large;
+}
+@media screen and (max-width: 1200px) {
+  .slideimg {
+    width: 30vw;
+    height: 30vw;
+  }
+}
+
+@media screen and (max-width: 920px) {
+  .slidecontent {
+    width: 30vw;
+  }
+}
+@media screen and (max-width: 768px) {
+  .slide {
+    flex-direction: column;
+  }
+  .slideimg {
+    width: 60vw;
+    height: auto;
+  }
+  .valueimg {
+    display: none;
+  }
+  .slidecontent {
+    width: 60vw;
+  }
+  .value-item i {
+    font-size: x-large;
+  }
+}
+@media screen and (max-width: 480px) {
+  .homeTitle {
+    font-size: 1.6rem;
+    padding: 1.5rem 2rem;
+  }
+  .homeText {
+    font-size: 1.3rem;
+    padding: 1.5rem 2rem;
+  }
+  .slidecontent h {
+    font-size: large;
+  }
+}

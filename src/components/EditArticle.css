@@ -1,0 +1,145 @@
+/* === Modal Overlay (Dark Background) === */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  /* === Modal Content (Form Container) === */
+  .modal-content {
+    background: #fff;
+    width: 90%;
+    max-width: 600px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  /* === Modal Header (Title & Close Button) === */
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .modal-header h3 {
+    font-size: 20px;
+    color: #333;
+    margin: 0;
+  }
+  
+  /* === Close Button (X) === */
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #ff5c5c;
+    transition: 0.3s;
+  }
+  
+  .close-btn:hover {
+    color: #e60000;
+  }
+  
+  /* === Form Styling === */
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Ensures consistent spacing */
+  }
+  
+  /* === Label Styling === */
+  label {
+    font-weight: bold;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 3px;
+  }
+  
+  /* === Input & Textarea Styling === */
+  input,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border 0.3s ease-in-out;
+  }
+  
+  /* === Change border color when input is focused === */
+  input:focus,
+  textarea:focus {
+    border: 1px solid #007bff;
+    outline: none;
+  }
+  
+  /* === Ensuring Textarea is Resizable but not too large === */
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  
+  /* === Save Button Styling === */
+  .edit-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .edit-btn:hover {
+    background: #0056b3;
+  }
+  
+  /* === Responsive Design for Small Screens === */
+  @media (max-width: 768px) {
+    .modal-content {
+      width: 95%;
+    }
+  
+    .modal-header h3 {
+      font-size: 18px;
+    }
+  
+    input,
+    textarea {
+      font-size: 14px;
+    }
+  
+    .edit-btn {
+      font-size: 14px;
+    }
+  }
+  
+  /* === Smooth Fade-in Animation === */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  

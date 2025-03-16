@@ -1,0 +1,152 @@
+/* 🔹 Center the authentication forms */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to right,#000435, #000435);
+  padding: 20px; /* Prevents content cut-off on smaller screens */
+}
+
+/* 🔹 Authentication Box */
+.auth-box {
+  width: 400px;
+  padding: 30px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* 🔹 Headings */
+.auth-box h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* 🔹 Input Groups */
+.input-group {
+  position: relative;
+  margin: 15px 0;
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 12px;
+  background-color: #fff;
+  transition: border 0.3s ease-in-out;
+}
+
+/* 🔹 Input Fields */
+.input-group input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding-left: 35px; /* Space for icon */
+  background: transparent;
+  color: #333;
+}
+
+/* 🔹 Focus Effect */
+.input-group:focus-within {
+  border-color: #007bff;
+}
+
+/* 🔹 Icons */
+.input-group .icon {
+  position: absolute;
+  left: 10px;
+  color: #777;
+  font-size: 18px;
+}
+
+/* 🔹 Toggle Password Icon */
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  color: #777;
+  font-size: 18px;
+}
+
+.toggle-password:hover {
+  color: #007bff;
+}
+
+/* 🔹 Submit Button */
+.auth-box button {
+  width: 100%;
+  padding: 12px;
+  background: #007bff;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s ease, transform 0.2s;
+}
+
+.auth-box button:hover {
+  background: #0056b3;
+  transform: scale(1.02);
+}
+
+.auth-box button:active {
+  transform: scale(0.98);
+}
+
+/* 🔹 Error Message */
+.error {
+  color: red;
+  font-size: 14px;
+  background: rgba(255, 0, 0, 0.1);
+  padding: 8px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* 🔹 Links */
+.auth-box p {
+  font-size: 14px;
+  color: #555;
+  margin-top: 10px;
+}
+
+.auth-box a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.auth-box a:hover {
+  text-decoration: underline;
+}
+
+/* 🔹 Fade-In Animation */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(-10px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+/* 🔹 Responsive Styles */
+@media (max-width: 500px) {
+  .auth-box {
+      width: 90%;
+      padding: 20px;
+  }
+
+  .input-group input {
+      padding-left: 30px; /* Adjust for smaller screens */
+  }
+}
