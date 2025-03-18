@@ -10,8 +10,9 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Serve uploaded files
+
 
 // ✅ Database Connection
 const db = mysql.createConnection({
@@ -42,48 +43,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    await axios.post("/api/register", { name, email, password });
-    navigate("/login");
-  } catch (err) {
-    if (err.response && err.response.data && err.response.data.error) {
-      setError(err.response.data.error); // Display backend error
-    } else {
-      setError("Registration failed. Please check your details and try again.");
-    }
-  }
-};
-
-
-
-// Fetch all appointments
-app.get("/api/appointments", (req, res) => {
-  db.query("SELECT * FROM appointments", (err, results) => {
-    if (err) return res.status(500).json({ error: "Database error" });
-    res.json(results);
-  });
-});
-
-// Update appointment status
-app.put("/api/appointments/:id", (req, res) => {
-  const { id } = req.params;
-  const { status } = req.body;
-  db.query("UPDATE appointments SET status = ? WHERE id = ?", [status, id], (err) => {
-    if (err) return res.status(500).json({ error: "Update failed" });
-    res.json({ message: "Appointment updated successfully" });
-  });
-});
-
-// Delete an appointment
-app.delete("/api/appointments/:id", (req, res) => {
-  const { id } = req.params;
-  db.query("DELETE FROM appointments WHERE id = ?", [id], (err) => {
-    if (err) return res.status(500).json({ error: "Delete failed" });
-    res.json({ message: "Appointment deleted successfully" });
-  });
-});
 
 // ✅ Fetch All Articles
 app.get("/api/articles", (req, res) => {
@@ -92,87 +51,6 @@ app.get("/api/articles", (req, res) => {
     res.json(results);
   });
 });
-
-app.post("/api/register", async (req, res) => {
-  try {
-      const { username, email, password, role = "subscriber" } = req.body; // Default role
-
-      if (!username || !email || !password) {
-          return res.status(400).json({ error: "All fields are required." });
-      }
-
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      const sql = "INSERT INTO system_users (username, email, password_hash, role) VALUES (?, ?, ?, ?)";
-      db.query(sql, [username, email, hashedPassword, role], (err, result) => {
-          if (err) {
-              console.error("Database Error:", err);
-              return res.status(500).json({ error: "Database error. Try again." });
-          }
-          res.json({ message: "User registered successfully!" });
-      });
-  } catch (error) {
-      console.error("Server Error:", error);
-      res.status(500).json({ error: "Server error. Try again." });
-  }
-});   
-
-router.post("/api/login", async (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ error: "All fields are required." });
-  }
-
-  const sql = "SELECT * FROM system_users WHERE email = ?";
-  db.query(sql, [email], async (err, results) => {
-    if (err) {
-      console.error("Database Error:", err);
-      return res.status(500).json({ error: "Server error. Try again." });
-    }
-
-    if (results.length === 0) {
-      console.log("User Not Found:", email);
-      return res.status(401).json({ error: "Invalid email or password." });
-    }
-
-    const user = results[0];
-
-    console.log("Entered Password:", password);
-    console.log("Stored Hash:", user.password_hash);
-
-    // Check if password hash is missing or invalid
-    if (!user.password_hash || user.password_hash.length < 10) {
-      console.error("Invalid password hash for user:", email);
-      return res.status(500).json({ error: "Invalid password data. Contact support." });
-    }
-
-    try {
-      const isMatch = await bcrypt.compare(password, user.password_hash);
-      console.log("Password Match:", isMatch);
-
-      if (!isMatch) {
-        return res.status(401).json({ error: "Invalid email or password." });
-      }
-
-      // Generate JWT Token
-      const token = jwt.sign(
-        { id: user.id, email: user.email, role: user.role },
-        process.env.JWT_SECRET || "your_secret,_key",
-        { expiresIn: "1h" }
-      );
-
-      res.json({ message: "Login successful", token, user });
-    } catch (error) {
-      console.error("Error comparing passwords:", error);
-      res.status(500).json({ error: "Server error. Try again." });
-    }
-  });
-});
-
-
-module.exports = router;
-
 
 // ✅ Fetch a Single Article by ID
 app.get("/api/articles/:id", (req, res) => {
@@ -188,17 +66,6 @@ app.get("/api/articles/:id", (req, res) => {
     res.json(results[0]); // Return the first (and only) matching article
   });
 });
-
-
-// ✅ Fetch All Appointments
-app.get("/api/appointments", (req, res) => {
-  db.query("SELECT * FROM appointments", (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(results);
-  });
-});
-
-
 
 // ✅ Fetch All System Users
 app.get("/api/system-users", (req, res) => {
@@ -228,22 +95,30 @@ app.get("/api/system-users/:id", (req, res) => {
   });
 });
 
+
+
 // ✅ Add a New System User
-app.post("/api/system-users", (req, res) => {
+app.post("/api/system-users", async (req, res) => {
   const { username, email, password, role } = req.body;
 
   if (!username || !email || !password || !role) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
-  const sql = "INSERT INTO system_users (username, email, password, role) VALUES (?, ?, ?, ?)";
-  const values = [username, email, password, role];
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  db.query(sql, values, (err, result) => {
-    if (err) return res.status(500).json({ error: err.message });
+    const sql = "INSERT INTO system_users (username, email, password, role) VALUES (?, ?, ?, ?)";
+    const values = [username, email, hashedPassword, role];
 
-    res.json({ id: result.insertId, username, email, role });
-  });
+    db.query(sql, values, (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+
+      res.json({ id: result.insertId, username, email, role });
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Error hashing password", details: error.message });
+  }
 });
 
 // ✅ Update a System User
@@ -285,6 +160,7 @@ app.delete("/api/system-users/:id", (req, res) => {
     res.json({ message: "User deleted successfully" });
   });
 });
+
 // ✅ Add a New Article
 app.post("/api/articles", (req, res) => {
   const { title, author, date, image, description } = req.body;
@@ -452,13 +328,60 @@ app.get("/api/reports", async (req, res) => {
   }
 });
 
-// ✅ Default Route
-app.get("/", (req, res) => {
-  res.send("✅ GM Advocates API is running...");
+
+// ✅ User Login Route
+app.post("/api/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ success: false, message: "Email and password are required" });
+  }
+
+  const sql = "SELECT * FROM system_users WHERE email = ?";
+  db.query(sql, [email], async (err, results) => {
+    if (err) {
+      console.error("Database error:", err.message);
+      return res.status(500).json({ success: false, message: "Database error", error: err.message });
+    }
+
+    if (results.length === 0) {
+      console.warn("User not found:", email);
+      return res.status(401).json({ success: false, message: "User not found" });
+    }
+
+    const user = results[0];
+    console.log("User found:", user);
+
+    try {
+      const isMatch = await bcrypt.compare(password, user.password);
+      console.log("Password match result:", isMatch);
+
+      if (!isMatch) {
+        return res.status(401).json({ success: false, message: "Invalid credentials" });
+      }
+
+      // Generate JWT Token
+      const token = jwt.sign(
+        { id: user.id, email: user.email, role: user.role },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+      );
+
+      res.json({ success: true, token, user: { id: user.id, email: user.email, role: user.role } });
+    } catch (error) {
+      console.error("Error verifying password:", error.message);
+      return res.status(500).json({ success: false, message: "Error verifying password", error: error.message });
+    }
+  });
 });
 
-// ✅ Start Server
-const PORT = 5000;
-app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
-});
+    const PORT = process.env.PORT || 5000;
+    
+    app.get("/", (req, res) => {
+      res.send("✅ GM Advocates API is running...");
+    });
+    
+    app.listen(PORT, () => {
+      console.log(`✅ Server running on port ${PORT}`);
+    });
+    

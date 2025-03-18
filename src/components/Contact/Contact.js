@@ -9,9 +9,9 @@ function Contact() {
       <h3>Don't Wait Any Longer</h3>
       <h1>Contact Us Today!</h1>
 
-      <div className="phone">
+      <div className="phone-number">
         <i className="fa fa-phone"></i>
-        <h2>+254 786 437 754</h2>
+        <h2 >+254 786 437 754</h2>
       </div>
     </section>
   );

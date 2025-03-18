@@ -71,7 +71,7 @@ function Message() {
             ></input>
             <input
               type="email"
-              className="email"
+              className="email1"
               placeholder="Your email"
               name="email"
               autocomplete="off"

@@ -21,8 +21,9 @@ h3 {
 h1 {
   font-size: 3rem;
 }
-h2 {
+.phone-number h2 {
   font-size: 1.6rem;
+  color:white;
 }
 .phone {
   display: flex;

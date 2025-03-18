@@ -1,0 +1,184 @@
+/* Floating Contact Menu */
+.floating-menu {
+  position: fixed;
+  bottom: 20px; /* Keep all buttons above chat */
+  right: 20px;
+  display: flex;
+  flex-direction: column; /* Stack buttons */
+  gap: 10px;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Contact Buttons (WhatsApp, Phone, Email, Chat) */
+.contact-button {
+  background-color: #000435;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.contact-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Different Button Colors */
+.whatsapp { background-color: #25D366; } /* WhatsApp Green */
+.phone { background-color: green; }
+.email { background-color: #8b0000; }
+.chat { background-color: #024677; }
+
+/* Chat Window */
+.chat-window {
+  width: 320px;
+  height: 400px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: none; /* Initially hidden */
+  flex-direction: column;
+  overflow: hidden;
+  position: fixed;
+  bottom: 100px; /* Adjusted to fit above contact buttons */
+  right: 20px;
+  z-index: 1100;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 480px) {
+  .floating-menu {
+    bottom: 10px;
+    right: 15px;
+    gap: 8px;
+  }
+
+  .contact-button {
+    width: 50px;
+    height: 50px;
+    font-size: 22px;
+  }
+
+  .chat-window {
+    width: 90%;
+    right: 5%;
+  }
+}
+.chat-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+/* Chat Button */
+.chat-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 24px;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.chat-button:hover {
+  background: #0056b3;
+}
+
+
+
+.chat-window.show {
+  display: flex;
+  opacity: 1;
+}
+
+.chat-window.hide {
+  opacity: 0;
+  display: none;
+}
+
+/* Chat Header */
+.chat-header {
+  background: #024677;
+  color: white;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-header button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Chat Body */
+.chat-body {
+  padding: 10px;
+  height: 250px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Chat Messages */
+.chat-message {
+  max-width: 75%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+.chat-message.bot {
+  background: #f1f1f1;
+  align-self: flex-start;
+  color: black;
+}
+
+.chat-message.user {
+  background: #024677;
+  color: white;
+  align-self: flex-end;
+}
+
+/* Chat Footer */
+.chat-footer {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
+.chat-footer input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: gray;
+}
+
+.chat-footer button {
+  background: #024677;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin-left: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+}

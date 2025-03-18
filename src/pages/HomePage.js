@@ -9,6 +9,7 @@ import Review from "../components/Review/Review";
 import Message from "../components/Message/Message";
 import HomeScrollLink from "../components/Navbar/HomeScrollLink";
 
+
 function HomePage() {
   return (
     <div className="Homepage">

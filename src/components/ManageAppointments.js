@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaCheckCircle, FaTimesCircle, FaTrashAlt, FaSearch } from "react-icons/fa"; // Import icons
+import { FaCheckCircle, FaTimesCircle, FaTrashAlt, FaSearch } from "react-icons/fa";
 import "./ManageAppointments.css";
 
 const ManageAppointments = () => {
@@ -24,7 +24,7 @@ const ManageAppointments = () => {
       }
     };
     fetchAppointments();
-  }, []);
+  }, [API_URL]); // Added API_URL as dependency
 
   const updateStatus = async (id, status) => {
     try {

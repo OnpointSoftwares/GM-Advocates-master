@@ -1,7 +1,9 @@
+import React, { useState } from "react"; // ✅ Import React and useState
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ScrollToTop from "./ScrollToTop";
+import ChatBox from "./components/ChatBox/ChatBox"; // 🔹 Import ChatBox
 
 // 🔹 Admin Dashboard & Components
 import Dashboard from "./pages/dashboard";
@@ -14,7 +16,7 @@ import AddArticle from "./components/AddArticle";
 import ArticlesDetail from "./pages/ArticlesDetail";
 import BlogGrid from "./components/Articles/blog_grid";
 
-// 🔹 Authentication Pages (✅ Newly Added)
+// 🔹 Authentication Pages
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -33,11 +35,32 @@ import InvestmentFranchise from "./components/Practise/InvestmentFranchise";
 
 // 🔹 People
 import People from "./components/People/People";
-import PersonProfile from "./components/People/PersonProfile"; // ✅ Dynamic Profile Page
+import PersonProfile from "./components/People/PersonProfile";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 // 🔹 Careers
 import Careers from "./pages/Careers";
 import JobDetail from "./pages/JobDetail";
+
+// 🔹 Floating Contact Menu Component
+const FloatingContactMenu = () => {
+  const [showChat, setShowChat] = useState(false); // ✅ Define state
+
+  return (
+    <div className="floating-menu">
+      <a href="tel:+254786437754" className="contact-button phone" title="Call Us">📞</a>
+      <a href="https://wa.me/254786437754" className="contact-button whatsapp" title="WhatsApp Us">
+        <i className="fab fa-whatsapp"></i>
+      </a>
+      <button className="contact-button chat" title="Live Chat" onClick={() => setShowChat(!showChat)}>
+        💬
+      </button>
+      <a href="mailto:info@gmorinaadvocates.com" className="contact-button email" title="Email Us">📧</a>
+
+      {showChat && <ChatBox />} {/* ✅ Conditionally render ChatBox */}
+    </div>
+  );
+};
 
 function App() {
   return (
@@ -57,7 +80,7 @@ function App() {
           <Route path="/articles/:id" element={<ArticlesDetail />} />
           <Route path="/add-article" element={<AddArticle />} />
 
-          {/* 🔹 Authentication Pages (✅ Newly Added) */}
+          {/* 🔹 Authentication Pages */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -76,7 +99,7 @@ function App() {
 
           {/* 🔹 People */}
           <Route path="/our-people" element={<People />} />
-          <Route path="/our-people/:name" element={<PersonProfile />} /> {/* ✅ Dynamic Route */}
+          <Route path="/our-people/:name" element={<PersonProfile />} />
 
           {/* 🔹 Admin Dashboard & Management */}
           <Route path="/dashboard" element={<Dashboard />} />
@@ -86,6 +109,9 @@ function App() {
           <Route path="/dashboard/system-users" element={<SystemUsers />} />
           <Route path="/dashboard/reports" element={<Reports />} />
         </Routes>
+
+        {/* 🔹 Floating Contact Menu & ChatBox on All Pages */}
+        <FloatingContactMenu />
       </Router>
     </div>
   );

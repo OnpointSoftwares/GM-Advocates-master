@@ -23,18 +23,12 @@
   height: auto;
 }
 .about-content h1 {
-  font-size: 3rem;
+ 
   color: #024677;
   
 }
-.horizontal-bar {
-  margin: 1.25rem 0;
-  width: 100px;
-  height: 5px;
-  background-color: yellow;
-}
+
 .about-content p {
-  padding-top: 5rem;
   color: #024677;
   font-size: 2rem;
 }

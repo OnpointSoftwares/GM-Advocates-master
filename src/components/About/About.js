@@ -26,10 +26,9 @@ function About() {
           Your trusted Legal <br />
           Partner
         </h1>
-      
 
         <p>
-          G.M Orina & Co. Advocates is a premierlaw firm providing legal
+          G.M Orina & Co. Advocates is a premier law firm providing legal
           counsel and solutions to a wide range of clients in Kenya, Africa and
           globally.
         </p>

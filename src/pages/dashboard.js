@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ Import for redirection
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import AdminNavbar from "../components/AdminNavbar";
 import Articles from "../components/Articles";
@@ -10,18 +11,30 @@ import Reports from "../components/Reports";
 import "./Dashboard.css";
 
 const Dashboard = () => {
-  const navigate = useNavigate(); // ✅ Navigation hook
-  const [selectedSection, setSelectedSection] = useState("articles"); // Default section
+  const navigate = useNavigate();
+  const [selectedSection, setSelectedSection] = useState("articles");
+  const [user, setUser] = useState(null);
 
-  // ✅ Check if the admin is logged in
-  useEffect(() => {
-    const isAuthenticated = localStorage.getItem("adminToken"); // Assuming token is stored here
-    if (!isAuthenticated) {
-      navigate("/login"); // Redirect to login if not authenticated
-    }
+  // Check if the user is authenticated by requesting session info from the backend
+  /*useEffect(() => {
+    axios.defaults.withCredentials = true; // Ensure cookies are sent
+    axios
+      .get("http://localhost:5000/dashboard") // Your protected endpoint
+      .then((response) => {
+        setUser(response.data.user);
+      })
+      .catch((error) => {
+        console.error("Session invalid or expired:", error);
+        navigate("/login");
+      });
   }, [navigate]);
 
-  // Function to handle navigation changes
+  // Show a loading indicator while verifying the session
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+*/
+  // Handle sidebar navigation
   const handleNavigation = (section) => {
     setSelectedSection(section);
   };
@@ -36,9 +49,9 @@ const Dashboard = () => {
         <AdminNavbar />
 
         <div className="dashboard-section">
-          {/* Dynamically Load Selected Section */}
+          {/* Dynamically load the selected section */}
           {selectedSection === "articles" && <Articles />}
-          {selectedSection === "ManageAppointments" && <ManageAppointments />}
+          {selectedSection === "appointments" && <ManageAppointments />}
           {selectedSection === "team-members" && <TeamMembers />}
           {selectedSection === "system-users" && <SystemUsers />}
           {selectedSection === "reports" && <Reports />}
