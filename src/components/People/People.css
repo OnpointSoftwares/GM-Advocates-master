@@ -5,3 +5,46 @@
   flex-wrap: wrap;
   margin: 0 auto;
 }
+/* Error Message */
+.error-message {
+  color: #d9534f;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+  margin: 20px auto;
+  width: 80%;
+}
+
+/* Loading Message */
+.loading-message {
+  color: #0275d8;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Empty State Message */
+.empty-state {
+  text-align: center;
+  color: #555;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  width: 80%;
+}
+
+.empty-state h3 {
+  color:  #024677;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.empty-state p {
+  font-size: 16px;
+  color: #666;
+}

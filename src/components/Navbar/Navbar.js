@@ -2,26 +2,21 @@ import React, { useState, useEffect } from "react";
 import "./Navbar.css";
 import logo from "../../assets/logo.jpeg";
 import { Link } from "react-router-dom";
-import PracticeAreaLinks from "./PracticeAreaLinks";
 import { motion } from "framer-motion";
 import { Link as ScrollLink } from "react-scroll";
+
 const Navbar = ({ HomeLinkToRender }) => {
   const [showMenu, setshowMenu] = useState(false);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
-  const handleMouseEnter = () => {
-    setDropdownVisible(true);
-  };
-
-  const handleMouseLeave = () => {
-    setDropdownVisible(false);
-  };
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
   window.onbeforeunload = function () {
     window.scrollTo(0, 0);
   };
+
   return (
     <div className="navbar">
       <motion.div
@@ -39,7 +34,6 @@ const Navbar = ({ HomeLinkToRender }) => {
       <motion.div
         initial={{ y: "-30vh" }}
         animate={{ y: 0 }}
-        n
         transition={{ type: "spring", duration: 4 }}
         className="desktopMenu"
       >
@@ -56,56 +50,26 @@ const Navbar = ({ HomeLinkToRender }) => {
           About
         </ScrollLink>
 
-        <div
-          className="practise-area-links"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          style={{
-            position: "relative",
-          }}
-        >
-          <span className="navlink">Practice Areas</span>
-          {isDropdownVisible && (
-            <div
-              style={{
-                position: "absolute",
-              }}
-            >
-              <PracticeAreaLinks />
-            </div>
-          )}
-        </div>
-        <Link
+        {/* 🔹 Updated "Practice Areas" to scroll to the section */}
+        <ScrollLink
           activeClass="active"
-          to="/our-people/"
+          to="practice-areas"
           spy={true}
           smooth={true}
           offset={-50}
           duration={600}
           className="desktopMenuListItem"
         >
-          Our people
+          Practice Areas
+        </ScrollLink>
+
+        <Link to="/our-people/" className="desktopMenuListItem">
+          Our People
         </Link>
-        <Link
-          activeClass="active"
-          to="/articles/"
-          spy={true}
-          smooth={true}
-          offset={-50}
-          duration={600}
-          className="desktopMenuListItem"
-        >
+        <Link to="/articles/" className="desktopMenuListItem">
           Articles
         </Link>
-        <Link
-          activeClass="active"
-          to="/careers/"
-          spy={true}
-          smooth={true}
-          offset={-50}
-          duration={600}
-          className="desktopMenuListItem"
-        >
+        <Link to="/careers/" className="desktopMenuListItem">
           Careers
         </Link>
         <ScrollLink
@@ -122,29 +86,13 @@ const Navbar = ({ HomeLinkToRender }) => {
       </motion.div>
 
       <div className="mobMenu" onClick={() => setshowMenu(!showMenu)}>
-        {showMenu ? (
-          <i className="bi bi-x-lg"></i>
-        ) : (
-          <i className="bi bi-list"></i>
-        )}
+        {showMenu ? <i className="bi bi-x-lg"></i> : <i className="bi bi-list"></i>}
       </div>
 
+      {/* 🔹 Updated Mobile Menu */}
       <div className="navMenu" style={{ display: showMenu ? "flex" : "none" }}>
-        <Link
-          activeClass="active"
-          to="/"
-          spy={true}
-          smooth={true}
-          offset={-100}
-          duration={600}
-          className="listItem"
-          onClick={() => setshowMenu(false)}
-        >
-          Home{" "}
-        </Link>
-        <Link
-          activeClass="active"
-          to="/"
+        <ScrollLink
+          to="about"
           spy={true}
           smooth={true}
           offset={-50}
@@ -153,33 +101,11 @@ const Navbar = ({ HomeLinkToRender }) => {
           onClick={() => setshowMenu(false)}
         >
           About
-        </Link>
-        <div
-          className="pract-navlink"
-          onClick={() => setDropdownVisible(!isDropdownVisible)}
-          style={{
-            position: "relative",
-          }}
-        >
-          <div className="pract-link">
-            <h>Practice Areas</h>
-            {isDropdownVisible ? (
-              <i class="fa fa-angle-up"></i>
-            ) : (
-              <i class="fa fa-angle-down"></i>
-            )}
-          </div>
+        </ScrollLink>
 
-          {isDropdownVisible && (
-            <div>
-              <PracticeAreaLinks />
-            </div>
-          )}
-        </div>
-
-        <Link
-          activeClass="active"
-          to="/our-people/"
+        {/* 🔹 Mobile menu scrolls to "Practice Areas" */}
+        <ScrollLink
+          to="practice-areas"
           spy={true}
           smooth={true}
           offset={-50}
@@ -187,50 +113,29 @@ const Navbar = ({ HomeLinkToRender }) => {
           className="listItem"
           onClick={() => setshowMenu(false)}
         >
+          Practice Areas
+        </ScrollLink>
+
+        <Link to="/our-people/" className="listItem" onClick={() => setshowMenu(false)}>
           Our People
         </Link>
-        <Link
-          activeClass="active"
-          to="/articles/"
-          spy={true}
-          smooth={true}
-          offset={-50}
-          duration={600}
-          className="listItem"
-          onClick={() => setshowMenu(false)}
-        >
+        <Link to="/articles/" className="listItem" onClick={() => setshowMenu(false)}>
           Articles
         </Link>
-        <Link
-          activeClass="active"
-          to="/careers/"
-          spy={true}
-          smooth={true}
-          offset={-50}
-          duration={600}
-          className="listItem"
-          onClick={() => setshowMenu(false)}
-        >
+        <Link to="/careers/" className="listItem" onClick={() => setshowMenu(false)}>
           Careers
         </Link>
 
         <ScrollLink
-          activeClass="active"
           to="contact"
           spy={true}
           smooth={true}
           offset={-50}
           duration={600}
           className="listItem"
-          style={{
-            display: "block",
-            color: "#024677",
-            padding: "0.25rem 0",
-            width: "fit-content",
-          }}
           onClick={() => setshowMenu(false)}
         >
-          Contact us
+          Contact Us
         </ScrollLink>
 
         <button className="ConsultationBtn">Get in Touch</button>

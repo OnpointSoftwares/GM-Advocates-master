@@ -8,7 +8,6 @@ import ChatBox from "./components/ChatBox/ChatBox"; // 🔹 Import ChatBox
 // 🔹 Admin Dashboard & Components
 import Dashboard from "./pages/dashboard";
 import Articles from "./components/Articles";
-import ManageAppointments from "./components/ManageAppointments";
 import TeamMembers from "./components/TeamMembers";
 import SystemUsers from "./components/SystemUsers";
 import Reports from "./components/Reports";
@@ -18,8 +17,6 @@ import BlogGrid from "./components/Articles/blog_grid";
 
 // 🔹 Authentication Pages
 import Login from "./pages/Login";
-import Register from "./pages/Register";
-import ForgotPassword from "./pages/ForgotPassword";
 
 // 🔹 Practice Areas
 import Litigation from "./components/Practise/Litigation";
@@ -42,9 +39,12 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import Careers from "./pages/Careers";
 import JobDetail from "./pages/JobDetail";
 
+// 🔹 Service Details Page (NEW)
+import ServiceDetails from "./components/ServiceDetails";  // ✅ Import ServiceDetails
+
 // 🔹 Floating Contact Menu Component
 const FloatingContactMenu = () => {
-  const [showChat, setShowChat] = useState(false); // ✅ Define state
+  const [showChat, setShowChat] = useState(false);
 
   return (
     <div className="floating-menu">
@@ -52,12 +52,9 @@ const FloatingContactMenu = () => {
       <a href="https://wa.me/254786437754" className="contact-button whatsapp" title="WhatsApp Us">
         <i className="fab fa-whatsapp"></i>
       </a>
-      <button className="contact-button chat" title="Live Chat" onClick={() => setShowChat(!showChat)}>
-        💬
-      </button>
-      <a href="mailto:info@gmorinaadvocates.com" className="contact-button email" title="Email Us">📧</a>
+      <a href="mailto:gmorinaadvocates@gmail.com" className="contact-button email" title="Email Us">📧</a>
 
-      {showChat && <ChatBox />} {/* ✅ Conditionally render ChatBox */}
+
     </div>
   );
 };
@@ -82,8 +79,6 @@ function App() {
 
           {/* 🔹 Authentication Pages */}
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
 
           {/* 🔹 Practice Areas */}
           <Route path="/procurement-law" element={<ProcurementLaw />} />
@@ -104,10 +99,12 @@ function App() {
           {/* 🔹 Admin Dashboard & Management */}
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/articles" element={<Articles />} />
-          <Route path="/dashboard/appointments" element={<ManageAppointments />} />
           <Route path="/dashboard/team-members" element={<TeamMembers />} />
           <Route path="/dashboard/system-users" element={<SystemUsers />} />
           <Route path="/dashboard/reports" element={<Reports />} />
+
+          {/* 🔹 Service Details Route (NEW) */}
+          <Route path="/services/:id" element={<ServiceDetails />} />  {/* ✅ Now handles service pages */}
         </Routes>
 
         {/* 🔹 Floating Contact Menu & ChatBox on All Pages */}

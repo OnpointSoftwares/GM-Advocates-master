@@ -1,0 +1,11 @@
+/* PracticeAreas.css */
+.hero-section {
+    color: white;
+    text-align: center;
+    padding: 80px 0;
+    background: linear-gradient(0deg, rgba(2, 6, 252, 0.3), rgba(2, 6, 252, 0.3)),
+      url("../../assets/universe.jpg");
+    background-size: cover;
+    background-position: center;
+  }
+  

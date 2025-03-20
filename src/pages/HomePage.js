@@ -8,7 +8,7 @@ import Contact from "../components/Contact/Contact";
 import Review from "../components/Review/Review";
 import Message from "../components/Message/Message";
 import HomeScrollLink from "../components/Navbar/HomeScrollLink";
-
+import PracticeAreas from "../components/PracticeAreas/PracticeAreas"; // Import PracticeAreas
 
 function HomePage() {
   return (
@@ -17,6 +17,7 @@ function HomePage() {
       <Home />
       <About />
       <AboutBg />
+      <PracticeAreas /> {/* Add Practice Areas Here */}
       <Review />
       <Message />
       <Contact />

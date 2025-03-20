@@ -1,61 +1,118 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+
 import Sidebar from "../components/Sidebar";
 import AdminNavbar from "../components/AdminNavbar";
 import Articles from "../components/Articles";
-import ManageAppointments from "../components/ManageAppointments";
 import TeamMembers from "../components/TeamMembers";
 import SystemUsers from "../components/SystemUsers";
 import Reports from "../components/Reports";
-import "./Dashboard.css";
+import PracticeAreas from "../components/ManagePracticeAreas"; // New Component
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [selectedSection, setSelectedSection] = useState("articles");
+  const [selectedSection, setSelectedSection] = useState(
+    localStorage.getItem("selectedSection") || "articles"
+  );
   const [user, setUser] = useState(null);
+  const [greeting, setGreeting] = useState("");
 
-  // Check if the user is authenticated by requesting session info from the backend
-  /*useEffect(() => {
-    axios.defaults.withCredentials = true; // Ensure cookies are sent
-    axios
-      .get("http://localhost:5000/dashboard") // Your protected endpoint
-      .then((response) => {
-        setUser(response.data.user);
-      })
-      .catch((error) => {
-        console.error("Session invalid or expired:", error);
-        navigate("/login");
-      });
-  }, [navigate]);
+  useEffect(() => {
+    document.title = `Admin | ${selectedSection.replace("-", " ")}`;
 
-  // Show a loading indicator while verifying the session
-  if (!user) {
-    return <div>Loading...</div>;
-  }
-*/
-  // Handle sidebar navigation
-  const handleNavigation = (section) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const decoded = jwtDecode(token);
+      setUser(decoded);
+      setGreeting(generateGreeting());
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
+  }, [navigate, selectedSection]);
+
+  const handleSectionChange = (section) => {
     setSelectedSection(section);
+    localStorage.setItem("selectedSection", section);
+  };
+
+  // Function to generate dynamic greetings
+  const generateGreeting = () => {
+    const hour = new Date().getHours();
+    const dayOfWeek = new Date().toLocaleString("en-US", { weekday: "long" });
+
+    const greetings = {
+      Monday: ["New week, new goals! 🚀", "Happy Monday! Let's win today! 💼"],
+      Tuesday: ["Keep pushing! 🔥", "Success is built step by step! 💼"],
+      Wednesday: ["Midweek hustle! 💪", "You're halfway there! 🚀"],
+      Thursday: ["Almost the weekend! Keep going! 🔥", "Stay focused! 💼"],
+      Friday: ["Happy Friday! 🎉", "End the week with a bang! 🚀"],
+      Saturday: ["Weekend mode? Not yet! 💪", "Big rewards come from effort! 🔥"],
+      Sunday: ["Recharge & reflect! 🌟", "Plan great things for next week! 🚀"],
+    };
+
+    const timeBasedGreetings = {
+      morning: ["Good morning! ☀️", "Rise & shine! 🌅"],
+      afternoon: ["Good afternoon! 🌞", "Keep driving success! 🚀"],
+      evening: ["Good evening! 🌙", "Great job today! 🎯"],
+    };
+
+    const timeOfDay = hour < 12 ? "morning" : hour < 18 ? "afternoon" : "evening";
+
+    const randomDayGreeting =
+      greetings[dayOfWeek][Math.floor(Math.random() * greetings[dayOfWeek].length)];
+    const randomTimeGreeting =
+      timeBasedGreetings[timeOfDay][Math.floor(Math.random() * timeBasedGreetings[timeOfDay].length)];
+
+    return `${randomDayGreeting} ${randomTimeGreeting}`;
+  };
+
+  const renderSection = () => {
+    switch (selectedSection) {
+      case "articles":
+        return <Articles />;
+      case "team-members":
+        return <TeamMembers />;
+      case "practice-areas":
+        return <PracticeAreas />; // New Section
+      case "system-users":
+        return <SystemUsers />;
+      case "reports":
+        return <Reports />;
+      default:
+        return <Articles />;
+    }
   };
 
   return (
-    <div className="admin-dashboard">
-      {/* Sidebar Navigation */}
-      <Sidebar onNavigate={handleNavigation} />
+    <div className="flex min-h-screen bg-gray-100">
+      {/* Sidebar */}
+      <Sidebar onNavigate={handleSectionChange} activeSection={selectedSection} />
 
       {/* Main Content */}
-      <div className="dashboard-content">
+      <div className="flex-1 flex flex-col">
+        {/* Admin Navbar */}
         <AdminNavbar />
 
-        <div className="dashboard-section">
-          {/* Dynamically load the selected section */}
-          {selectedSection === "articles" && <Articles />}
-          {selectedSection === "appointments" && <ManageAppointments />}
-          {selectedSection === "team-members" && <TeamMembers />}
-          {selectedSection === "system-users" && <SystemUsers />}
-          {selectedSection === "reports" && <Reports />}
-        </div>
+        {/* User Greeting */}
+        {user && (
+          <div className="p-4 bg-white shadow-md rounded-md m-4">
+            <h2 className="text-xl font-bold text-gray-800">
+              <span className="text-blue-600">{user.username || "Admin"}!</span> {greeting} 👋
+            </h2>
+          </div>
+        )}
+
+        {/* Dashboard Section */}
+        <div className="flex-grow p-4">{renderSection()}</div>
       </div>
     </div>
   );

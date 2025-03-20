@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./SystemUsers.css";
 
 const SystemUsers = () => {
   const [users, setUsers] = useState([]);
@@ -14,7 +13,7 @@ const SystemUsers = () => {
     role: "subscriber",
   });
 
-  const [editingUser, setEditingUser] = useState(null); // Store the user being edited
+  const [editingUser, setEditingUser] = useState(null);
   const [editedUser, setEditedUser] = useState({
     username: "",
     email: "",
@@ -25,27 +24,23 @@ const SystemUsers = () => {
     fetchUsers();
   }, []);
 
-  // Fetch system users from API
   const fetchUsers = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/system-users");
       setUsers(response.data);
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching users:", error);
       setError("Failed to load system users. Please try again.");
       setLoading(false);
     }
   };
 
-  // Handle filtering users based on search term
   const filteredUsers = searchTerm
     ? users.filter((user) =>
         user.username.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : users;
 
-  // Handle adding a new user
   const handleAddUser = async (e) => {
     e.preventDefault();
     try {
@@ -57,24 +52,20 @@ const SystemUsers = () => {
       setUsers((prevUsers) => [...prevUsers, response.data]);
       setNewUser({ username: "", email: "", password: "", role: "subscriber" });
     } catch (error) {
-      console.error("Error adding user:", error.response?.data || error.message);
-      setError(error.response?.data?.error || "Failed to add user. Please try again.");
+      setError("Failed to add user. Please try again.");
     }
   };
 
-  // Handle deleting a user
   const handleDeleteUser = async (id) => {
     if (!window.confirm("Are you sure you want to remove this user?")) return;
     try {
       await axios.delete(`http://localhost:5000/api/system-users/${id}`);
       setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id && user._id !== id));
     } catch (error) {
-      console.error("Error deleting user:", error);
       setError("Failed to delete user. Please try again.");
     }
   };
 
-  // Handle setting up user for editing
   const handleEditUser = (user) => {
     setEditingUser(user);
     setEditedUser({
@@ -84,7 +75,6 @@ const SystemUsers = () => {
     });
   };
 
-  // Handle updating user details
   const handleUpdateUser = async (e) => {
     e.preventDefault();
     if (!editingUser) return;
@@ -105,33 +95,33 @@ const SystemUsers = () => {
       setEditingUser(null);
       setEditedUser({ username: "", email: "", role: "" });
     } catch (error) {
-      console.error("Error updating user:", error);
       setError("Failed to update user. Please try again.");
     }
   };
 
   return (
-    <div className="system-users">
-      <h2>🔑 Manage System Users</h2>
+    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+      <h2 className="text-2xl font-semibold mb-4 text-gray-800">🔑 Manage System Users</h2>
 
-      {/* Display Error Message */}
-      {error && <p className="error">{error}</p>}
+      {error && <p className="text-red-500 mb-4">{error}</p>}
 
       {/* Search Bar */}
-      <div className="search-bar">
+      <div className="mb-4">
         <input
           type="text"
           placeholder="Search users..."
+          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
 
       {/* Add User Form */}
-      <form className="add-user-form" onSubmit={handleAddUser}>
+      <form className="mb-6 space-y-4" onSubmit={handleAddUser}>
         <input
           type="text"
           placeholder="Username"
+          className="w-full px-4 py-2 border rounded-md"
           value={newUser.username}
           onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
           required
@@ -139,6 +129,7 @@ const SystemUsers = () => {
         <input
           type="email"
           placeholder="Email Address"
+          className="w-full px-4 py-2 border rounded-md"
           value={newUser.email}
           onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
           required
@@ -146,11 +137,13 @@ const SystemUsers = () => {
         <input
           type="password"
           placeholder="Password"
+          className="w-full px-4 py-2 border rounded-md"
           value={newUser.password}
           onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
           required
         />
         <select
+          className="w-full px-4 py-2 border rounded-md"
           value={newUser.role}
           onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
         >
@@ -159,34 +152,42 @@ const SystemUsers = () => {
           <option value="author">Author</option>
           <option value="subscriber">Subscriber</option>
         </select>
-        <button type="submit">➕ Add User</button>
+        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-md">
+          ➕ Add User
+        </button>
       </form>
 
-      {/* Display Users List */}
+      {/* Users Table */}
       {loading ? (
-        <p>Loading users...</p>
+        <p className="text-center">Loading users...</p>
       ) : (
-        <table className="users-table">
+        <table className="w-full border-collapse border">
           <thead>
-            <tr>
-              <th>Username</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Actions</th>
+            <tr className="bg-gray-200">
+              <th className="p-2">Username</th>
+              <th className="p-2">Email</th>
+              <th className="p-2">Role</th>
+              <th className="p-2">Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredUsers.length > 0 ? (
               filteredUsers.map((user) => (
-                <tr key={user.id || user._id}>
-                  <td>{user.username}</td>
-                  <td>{user.email}</td>
-                  <td>{user.role}</td>
-                  <td>
-                    <button className="edit-btn" onClick={() => handleEditUser(user)}>
+                <tr key={user.id || user._id} className="border-t">
+                  <td className="p-2">{user.username}</td>
+                  <td className="p-2">{user.email}</td>
+                  <td className="p-2">{user.role}</td>
+                  <td className="p-2 flex gap-2">
+                    <button
+                      className="bg-yellow-500 text-white px-3 py-1 rounded-md"
+                      onClick={() => handleEditUser(user)}
+                    >
                       ✏️ Edit
                     </button>
-                    <button className="delete-btn" onClick={() => handleDeleteUser(user.id || user._id)}>
+                    <button
+                      className="bg-red-500 text-white px-3 py-1 rounded-md"
+                      onClick={() => handleDeleteUser(user.id || user._id)}
+                    >
                       ❌ Remove
                     </button>
                   </td>
@@ -194,7 +195,9 @@ const SystemUsers = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="4" style={{ textAlign: "center" }}>No users found</td>
+                <td colSpan="4" className="text-center p-4">
+                  No users found
+                </td>
               </tr>
             )}
           </tbody>
@@ -203,35 +206,31 @@ const SystemUsers = () => {
 
       {/* Edit User Modal */}
       {editingUser && (
-        <div className="edit-user-modal">
-          <h3>✏️ Edit User</h3>
-          <form onSubmit={handleUpdateUser}>
-            <input
-              type="text"
-              placeholder="Username"
-              value={editedUser.username}
-              onChange={(e) => setEditedUser({ ...editedUser, username: e.target.value })}
-              required
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              value={editedUser.email}
-              onChange={(e) => setEditedUser({ ...editedUser, email: e.target.value })}
-              required
-            />
-            <select
-              value={editedUser.role}
-              onChange={(e) => setEditedUser({ ...editedUser, role: e.target.value })}
-            >
-              <option value="admin">Admin</option>
-              <option value="editor">Editor</option>
-              <option value="author">Author</option>
-              <option value="subscriber">Subscriber</option>
-            </select>
-            <button type="submit">✅ Update</button>
-            <button type="button" onClick={() => setEditingUser(null)}>❌ Cancel</button>
-          </form>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg w-96">
+            <h3 className="text-xl font-semibold mb-4">✏️ Edit User</h3>
+            <form onSubmit={handleUpdateUser} className="space-y-4">
+              <input
+                type="text"
+                placeholder="Username"
+                className="w-full px-4 py-2 border rounded-md"
+                value={editedUser.username}
+                onChange={(e) => setEditedUser({ ...editedUser, username: e.target.value })}
+                required
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                className="w-full px-4 py-2 border rounded-md"
+                value={editedUser.email}
+                onChange={(e) => setEditedUser({ ...editedUser, email: e.target.value })}
+                required
+              />
+              <button type="submit" className="w-full bg-green-600 text-white py-2 rounded-md">
+                ✅ Update
+              </button>
+            </form>
+          </div>
         </div>
       )}
     </div>

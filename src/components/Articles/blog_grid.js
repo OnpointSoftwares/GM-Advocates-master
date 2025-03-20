@@ -5,6 +5,9 @@ import Navbar from "../Navbar/Navbar";
 import HomeNavLink from "../Navbar/HomeNavLink";
 import Contact from "../Contact/Contact";
 import Footer from "../Footer/Footer";
+import "./articles.css";
+
+
 
 export default function BlogGrid() {
   const [articles, setArticles] = useState([]);
@@ -30,6 +33,13 @@ export default function BlogGrid() {
   return (
     <section>
       <Navbar HomeLinkToRender={HomeNavLink} />
+
+      {/* 🔹 Background Section with Gradient and Image */}
+      <div className="articles-bg">
+        <h1 className="title">Our Articles</h1>
+        <p className="subtitle">Stay updated with the latest insights and news</p>
+      </div>
+
       <div className="max-w-6xl mx-auto py-12 px-6">
         {loading ? (
           <p className="text-center text-gray-500">🔄 Loading articles...</p>
@@ -73,7 +83,7 @@ export default function BlogGrid() {
                         </p>
                       )}
 
-                      {/* 🚀 New "Read More" Button */}
+                      {/* 🚀 "Read More" Button */}
                       <Link
                         to={`/articles/${article.id}`}
                         className="mt-4 inline-block text-blue-600 font-semibold hover:text-blue-800 transition"

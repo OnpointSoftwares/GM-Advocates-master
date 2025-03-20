@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./Reports.css";
 
 const Reports = () => {
   const [stats, setStats] = useState(null);
@@ -23,18 +22,27 @@ const Reports = () => {
   }, []);
 
   return (
-    <div className="reports-section">
-      <h2>📊 System Reports</h2>
+    <div className="bg-[#dcdcdc] min-h-screen p-6">
+      <h2 className="text-3xl font-bold text-[#000435] mb-4 text-center">
+        📊 System Reports
+      </h2>
 
       {error ? (
-        <p className="error">{error}</p>
+        <p className="text-red-600 text-center">{error}</p>
       ) : loading ? (
-        <p>Loading system stats...</p>
+        <p className="text-center text-[#555]">Loading system stats...</p>
       ) : (
-        <div className="stats-container">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
           {Object.entries(stats).map(([key, value]) => (
-            <div key={key} className="stat-card">
-              {getIcon(key)} {formatKey(key)}: {value}
+            <div
+              key={key}
+              className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center text-center"
+            >
+              <span className="text-4xl">{getIcon(key)}</span>
+              <h3 className="text-lg font-semibold text-[#000435] mt-2">
+                {formatKey(key)}
+              </h3>
+              <p className="text-2xl font-bold text-[#024677]">{value}</p>
             </div>
           ))}
         </div>
@@ -52,8 +60,11 @@ const getIcon = (key) => {
   const icons = {
     users: "👥",
     articles: "📄",
-    appointments: "🎓",
+    appointments: "📅",
     team_members: "👥",
+    messages: "💬",
+    revenue: "💰",
+    transactions: "💳",
   };
   return icons[key] || "📊";
 };

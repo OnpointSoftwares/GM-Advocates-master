@@ -44,6 +44,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 
+
+
 // ✅ Fetch All Articles
 app.get("/api/articles", (req, res) => {
   db.query("SELECT * FROM articles", (err, results) => {
@@ -328,7 +330,6 @@ app.get("/api/reports", async (req, res) => {
   }
 });
 
-
 // ✅ User Login Route
 app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
@@ -360,20 +361,84 @@ app.post("/api/login", async (req, res) => {
         return res.status(401).json({ success: false, message: "Invalid credentials" });
       }
 
-      // Generate JWT Token
+      // ✅ Fix: Include `username` in the JWT Token
       const token = jwt.sign(
-        { id: user.id, email: user.email, role: user.role },
+        { id: user.id, username: user.username, email: user.email, role: user.role }, // 🔥 Added username
         process.env.JWT_SECRET,
         { expiresIn: "1h" }
       );
 
-      res.json({ success: true, token, user: { id: user.id, email: user.email, role: user.role } });
+      res.json({ 
+        success: true, 
+        token, 
+        user: { id: user.id, username: user.username, email: user.email, role: user.role } // 🔥 Added username
+      });
     } catch (error) {
       console.error("Error verifying password:", error.message);
       return res.status(500).json({ success: false, message: "Error verifying password", error: error.message });
     }
   });
 });
+
+// ✅ Manage Practice Areas
+
+// 🔹 Get All Practice Areas
+app.get("/api/practice-areas", (req, res) => {
+  db.query("SELECT * FROM practice_areas", (err, results) => {
+    if (err) return res.status(500).json(err);
+    res.json(results);
+  });
+});
+
+// 🔹 Get Single Practice Area by ID
+app.get("/api/practice-areas/:id", (req, res) => {
+  const { id } = req.params;
+  db.query("SELECT * FROM practice_areas WHERE id = ?", [id], (err, result) => {
+    if (err) return res.status(500).json(err);
+    res.json(result[0]);
+  });
+});
+
+// 🔹 Add New Practice Area
+app.post("/api/practice-areas", upload.single("image"), (req, res) => {
+  const { title, description, areas_of_focus } = req.body;
+  const image = req.file ? `/uploads/${req.file.filename}` : null;
+
+  const sql =
+    "INSERT INTO practice_areas (title, description, image, areas_of_focus) VALUES (?, ?, ?, ?)";
+  db.query(sql, [title, description, image, areas_of_focus], (err, result) => {
+    if (err) return res.status(500).json(err);
+    res.json({ message: "Practice area added successfully", id: result.insertId });
+  });
+});
+
+// 🔹 Update a Practice Area
+app.put("/api/practice-areas/:id", upload.single("image"), (req, res) => {
+  const { id } = req.params;
+  const { title, description, areas_of_focus } = req.body;
+  const image = req.file ? `/uploads/${req.file.filename}` : req.body.image;
+
+  const sql =
+    "UPDATE practice_areas SET title = ?, description = ?, image = ?, areas_of_focus = ? WHERE id = ?";
+  db.query(sql, [title, description, image, areas_of_focus, id], (err, result) => {
+    if (err) return res.status(500).json(err);
+    res.json({ message: "Practice area updated successfully" });
+  });
+});
+
+// 🔹 Delete a Practice Area
+app.delete("/api/practice-areas/:id", (req, res) => {
+  const { id } = req.params;
+  db.query("DELETE FROM practice_areas WHERE id = ?", [id], (err, result) => {
+    if (err) return res.status(500).json(err);
+    res.json({ message: "Practice area deleted successfully" });
+  });
+});
+
+// Serve uploaded images
+app.use("/uploads", express.static("uploads"));
+
+
 
     const PORT = process.env.PORT || 5000;
     

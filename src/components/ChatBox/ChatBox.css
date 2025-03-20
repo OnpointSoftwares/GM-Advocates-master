@@ -119,6 +119,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
 }
 
 .chat-header button {
@@ -181,4 +182,39 @@
   margin-left: 5px;
   cursor: pointer;
   border-radius: 5px;
+}
+/* Model Selector Styles */
+.model-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 10px;
+  font-size: 14px;
+  color: #fff;
+}
+
+.model-selector label {
+  font-weight: bold;
+  color: #000435;
+}
+
+.model-selector select {
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #2c2f36;
+  color: #fff;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.model-selector select:hover {
+  border-color: #4f46e5;
+}
+
+.model-selector select:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 5px rgba(79, 70, 229, 0.5);
 }
