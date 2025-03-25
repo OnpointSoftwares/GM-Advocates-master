@@ -12,3 +12,4 @@ const PractiseAreaBg = ({ title }) => {
 };
 
 export default PractiseAreaBg;
+ 

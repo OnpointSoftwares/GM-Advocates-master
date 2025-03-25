@@ -13,7 +13,7 @@ import { motion } from "framer-motion";
 import { fadeIn } from "../../variants";
 import corevalueImg from "../../assets/core-value.jpeg";
 import { Link as ScrollLink } from "react-scroll";
-import PracticeAreas from "../PracticeAreas/PracticeAreas"; // Import PracticeAreas component
+
 
 function Home() {
   useEffect(() => {

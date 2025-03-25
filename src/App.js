@@ -1,9 +1,7 @@
-import React, { useState } from "react"; // ✅ Import React and useState
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ScrollToTop from "./ScrollToTop";
-import ChatBox from "./components/ChatBox/ChatBox"; // 🔹 Import ChatBox
 
 // 🔹 Admin Dashboard & Components
 import Dashboard from "./pages/dashboard";
@@ -11,7 +9,7 @@ import Articles from "./components/Articles";
 import TeamMembers from "./components/TeamMembers";
 import SystemUsers from "./components/SystemUsers";
 import Reports from "./components/Reports";
-import AddArticle from "./components/AddArticle";
+
 import ArticlesDetail from "./pages/ArticlesDetail";
 import BlogGrid from "./components/Articles/blog_grid";
 
@@ -40,28 +38,45 @@ import Careers from "./pages/Careers";
 import JobDetail from "./pages/JobDetail";
 
 // 🔹 Service Details Page (NEW)
-import ServiceDetails from "./components/ServiceDetails";  // ✅ Import ServiceDetails
+import ServiceDetails from "./components/ServiceDetails";
 
 // 🔹 Floating Contact Menu Component
 const FloatingContactMenu = () => {
-  const [showChat, setShowChat] = useState(false);
-
   return (
-    <div className="floating-menu">
-      <a href="tel:+254786437754" className="contact-button phone" title="Call Us">📞</a>
-      <a href="https://wa.me/254786437754" className="contact-button whatsapp" title="WhatsApp Us">
-        <i className="fab fa-whatsapp"></i>
+    <div className="fixed bottom-4 right-4 flex flex-col gap-3 z-50 md:bottom-6 md:right-6 lg:bottom-8 lg:right-8">
+      {/* Call Button - Green */}
+      <a 
+        href="tel:+254786437754"
+        className="bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 transition-all flex items-center justify-center w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
+        title="Call Us"
+      >
+        <i className="fas fa-phone-alt text-lg md:text-xl lg:text-2xl"></i>
       </a>
-      <a href="mailto:gmorinaadvocates@gmail.com" className="contact-button email" title="Email Us">📧</a>
+      
+      {/* WhatsApp Button - WhatsApp Green */}
+      <a 
+        href="https://wa.me/254786437754"
+        className="bg-[#25D366] text-white p-3 rounded-full shadow-lg hover:bg-green-600 transition-all flex items-center justify-center w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
+        title="WhatsApp Us"
+      >
+        <i className="fab fa-whatsapp text-lg md:text-xl lg:text-2xl"></i>
+      </a> 
 
-
+      {/* Email Button - Blue */}
+      <a 
+        href="mailto:gmorinaadvocates@gmail.com"
+        className="bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition-all flex items-center justify-center w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
+        title="Email Us"
+      >
+        <i className="fas fa-envelope text-lg md:text-xl lg:text-2xl"></i>
+      </a>
     </div>
   );
 };
 
 function App() {
   return (
-    <div className="App">
+    <div className="App min-h-screen flex flex-col">
       <Router>
         <ScrollToTop />
         <Routes>
@@ -75,8 +90,7 @@ function App() {
           <Route path="/blog" element={<BlogGrid />} />
           <Route path="/articles" element={<BlogGrid />} />
           <Route path="/articles/:id" element={<ArticlesDetail />} />
-          <Route path="/add-article" element={<AddArticle />} />
-
+       
           {/* 🔹 Authentication Pages */}
           <Route path="/login" element={<Login />} />
 
@@ -104,7 +118,7 @@ function App() {
           <Route path="/dashboard/reports" element={<Reports />} />
 
           {/* 🔹 Service Details Route (NEW) */}
-          <Route path="/services/:id" element={<ServiceDetails />} />  {/* ✅ Now handles service pages */}
+          <Route path="/services/:id" element={<ServiceDetails />} />
         </Routes>
 
         {/* 🔹 Floating Contact Menu & ChatBox on All Pages */}

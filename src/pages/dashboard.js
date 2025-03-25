@@ -4,11 +4,12 @@ import { jwtDecode } from "jwt-decode";
 
 import Sidebar from "../components/Sidebar";
 import AdminNavbar from "../components/AdminNavbar";
+import Footer from "../components/Footer/Footer";
 import Articles from "../components/Articles";
 import TeamMembers from "../components/TeamMembers";
 import SystemUsers from "../components/SystemUsers";
 import Reports from "../components/Reports";
-import PracticeAreas from "../components/ManagePracticeAreas"; // New Component
+import PracticeAreas from "../components/ManagePracticeAreas";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -44,7 +45,6 @@ const Dashboard = () => {
     localStorage.setItem("selectedSection", section);
   };
 
-  // Function to generate dynamic greetings
   const generateGreeting = () => {
     const hour = new Date().getHours();
     const dayOfWeek = new Date().toLocaleString("en-US", { weekday: "long" });
@@ -82,7 +82,7 @@ const Dashboard = () => {
       case "team-members":
         return <TeamMembers />;
       case "practice-areas":
-        return <PracticeAreas />; // New Section
+        return <PracticeAreas />;
       case "system-users":
         return <SystemUsers />;
       case "reports":
@@ -93,26 +93,36 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
       {/* Sidebar */}
-      <Sidebar onNavigate={handleSectionChange} activeSection={selectedSection} />
+      <Sidebar
+        onNavigate={handleSectionChange}
+        activeSection={selectedSection}
+        className="w-full lg:w-1/4 xl:w-1/5"
+      />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col p-2 sm:p-4 pt-16"> {/* Added pt-16 to fix content overlapping */}
         {/* Admin Navbar */}
         <AdminNavbar />
 
         {/* User Greeting */}
         {user && (
-          <div className="p-4 bg-white shadow-md rounded-md m-4">
-            <h2 className="text-xl font-bold text-gray-800">
+          <div className="p-4 bg-white shadow-md rounded-md m-2 sm:m-4 text-center sm:text-left">
+            <h2 className="text-lg sm:text-xl font-bold text-gray-800">
               <span className="text-blue-600">{user.username || "Admin"}!</span> {greeting} 👋
             </h2>
           </div>
         )}
+        
 
         {/* Dashboard Section */}
-        <div className="flex-grow p-4">{renderSection()}</div>
+        <div className="flex-grow p-2 sm:p-4 bg-white rounded-md shadow-md overflow-auto">
+          {renderSection()}
+        </div>
+
+        {/* Footer */}
+        <Footer />
       </div>
     </div>
   );
