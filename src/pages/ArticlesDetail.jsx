@@ -14,6 +14,14 @@ export default function ArticleDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [articleUrl, setArticleUrl] = useState("");
+  const [nextTeaser, setNextTeaser] = useState("");
+
+  // Teaser messages for next articles
+  const teasers = [
+    "📢 Coming Up Next: Stay tuned as we dive deeper into another fascinating topic, exploring key insights and shedding light on essential concepts that matter. Don’t miss out on expert analysis and valuable takeaways!",
+    "📢 Coming Up Next: Curious about what’s next? Our upcoming article unpacks a compelling subject that will expand your knowledge and keep you informed. Stay with us for the latest updates!",
+    "📢 Coming Up Next: Knowledge never stops! In our next article, we continue our journey into exciting and thought-provoking discussions. Keep an eye out—you won’t want to miss it!"
+  ];
 
   useEffect(() => {
     axios
@@ -23,38 +31,16 @@ export default function ArticleDetail() {
         setArticle(response.data);
         setLoading(false);
         setArticleUrl(window.location.href);
-
-        // Dynamically update meta tags for Facebook & LinkedIn
         document.title = response.data.title;
-
-        const metaTags = [
-          { property: "og:title", content: response.data.title },
-          { property: "og:description", content: response.data.description },
-          { property: "og:url", content: window.location.href },
-          { property: "og:image", content: response.data.image || "https://source.unsplash.com/800x400/?news" },
-          { property: "og:type", content: "article" },
-          { name: "twitter:title", content: response.data.title },
-          { name: "twitter:description", content: response.data.description },
-          { name: "twitter:image", content: response.data.image || "https://source.unsplash.com/800x400/?news" },
-          { name: "twitter:card", content: "summary_large_image" },
-        ];
-
-        metaTags.forEach(({ property, name, content }) => {
-          let metaElement = document.querySelector(`meta[${property ? "property" : "name"}="${property || name}"]`);
-          if (!metaElement) {
-            metaElement = document.createElement("meta");
-            metaElement.setAttribute(property ? "property" : "name", property || name);
-            document.head.appendChild(metaElement);
-          }
-          metaElement.setAttribute("content", content);
-        });
-
       })
       .catch((error) => {
         console.error("❌ Error fetching article:", error.response ? error.response.data : error.message);
         setError("Failed to load article. Please try again later.");
         setLoading(false);
       });
+
+    // Select a random teaser for the next article
+    setNextTeaser(teasers[Math.floor(Math.random() * teasers.length)]);
   }, [id]);
 
   return (
@@ -90,71 +76,77 @@ export default function ArticleDetail() {
               {/* Article Image */}
               <div className="mt-6">
                 <img 
-                  src={article.image || "https://source.unsplash.com/800x400/?news"} 
+                  src={article.image ? `http://localhost:5000/uploads/${article.image}` : "https://source.unsplash.com/800x400/?news"} 
                   alt="blog" 
                   className="w-full rounded-lg shadow-md"
                 />
               </div>
 
-              {/* Article Content */}
-              <p className="text-gray-700 mt-6 leading-relaxed">{article.description}</p>
+              {/* Article Content Rendered from Rich Text Editor */}
+              <div className="text-gray-700 mt-6 leading-relaxed">
+                <div dangerouslySetInnerHTML={{ __html: article.description }} />
+              </div>
 
               {/* Subsections */}
               {[1, 2, 3, 4].map((num) => (
                 article[`subtitle${num}`] && (
                   <div key={num} className="mt-6">
                     <h3 className="text-xl font-bold text-[#024677]">{article[`subtitle${num}`]}</h3>
-                    <p className="text-gray-700 mt-2 leading-relaxed">{article[`description${num}`]}</p>
+                    <div className="text-gray-700 mt-2 leading-relaxed" dangerouslySetInnerHTML={{ __html: article[`description${num}`] }} />
                   </div>
                 )
               ))}
+
+              {/* Next Article Teaser (Dynamic) */}
+              <div className="mt-8 p-4 bg-blue-100 border-l-4 border-blue-500 text-blue-900">
+                <p className="text-lg font-semibold">{nextTeaser}</p>
+              </div>
+
+              {/* Social Share Buttons */}
               <div className="mt-8 flex flex-col sm:flex-row sm:items-center sm:space-x-4 bg-gray-100 p-4 rounded-lg shadow-md">
-  <p className="text-gray-700 font-medium mb-2 sm:mb-0">📢 Share this article:</p>
+                <p className="text-gray-700 font-medium mb-2 sm:mb-0">📢 Share this article:</p>
+                <div className="flex space-x-4">
+                  {/* Facebook */}
+                  <a 
+                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(articleUrl)}&quote=${encodeURIComponent(article.title)}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-white bg-blue-600 p-2 rounded-full hover:bg-blue-800 transition"
+                  >
+                    <FaFacebook size={20} />
+                  </a>
 
-  <div className="flex space-x-4">
-    {/* Facebook */}
-    <a 
-      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(articleUrl)}&quote=${encodeURIComponent(article.title)}`} 
-      target="_blank" 
-      rel="noopener noreferrer" 
-      className="text-white bg-blue-600 p-2 rounded-full hover:bg-blue-800 transition"
-    >
-      <FaFacebook size={20} />
-    </a>
+                  {/* Twitter */}
+                  <a 
+                    href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(articleUrl)}&text=${encodeURIComponent(article.title + " - " + article.description)}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-white bg-blue-400 p-2 rounded-full hover:bg-blue-600 transition"
+                  >
+                    <FaTwitter size={20} />
+                  </a>
 
-    {/* Twitter */}
-    <a 
-      href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(articleUrl)}&text=${encodeURIComponent(article.title + " - " + article.description)}`} 
-      target="_blank" 
-      rel="noopener noreferrer" 
-      className="text-white bg-blue-400 p-2 rounded-full hover:bg-blue-600 transition"
-    >
-      <FaTwitter size={20} />
-    </a>
+                  {/* LinkedIn */}
+                  <a 
+                    href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(articleUrl)}&title=${encodeURIComponent(article.title)}&summary=${encodeURIComponent(article.description)}&source=GM ORINA & CO. ADVOCATES`} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-white bg-blue-700 p-2 rounded-full hover:bg-blue-900 transition"
+                  >
+                    <FaLinkedin size={20} />
+                  </a>
 
-    {/* LinkedIn */}
-    <a 
-      href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(articleUrl)}&title=${encodeURIComponent(article.title)}&summary=${encodeURIComponent(article.description)}&source=GM ORINA & CO. ADVOCATES`} 
-      target="_blank" 
-      rel="noopener noreferrer" 
-      className="text-white bg-blue-700 p-2 rounded-full hover:bg-blue-900 transition"
-    >
-      <FaLinkedin size={20} />
-    </a>
-
-    {/* WhatsApp */}
-    <a 
-      href={`https://api.whatsapp.com/send?text=${encodeURIComponent(article.title + " - " + article.description + " Read more: " + articleUrl)}`} 
-      target="_blank" 
-      rel="noopener noreferrer" 
-      className="text-white bg-green-500 p-2 rounded-full hover:bg-green-700 transition"
-    >
-      <FaWhatsapp size={20} />
-    </a>
-  </div>
-</div>
-
-
+                  {/* WhatsApp */}
+                  <a 
+                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(article.title + " - " + article.description + " Read more: " + articleUrl)}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-white bg-green-500 p-2 rounded-full hover:bg-green-700 transition"
+                  >
+                    <FaWhatsapp size={20} />
+                  </a>
+                </div>
+              </div>
             </>
           ) : (
             <p className="text-center text-gray-500 mt-6">⚠️ Article not found.</p>

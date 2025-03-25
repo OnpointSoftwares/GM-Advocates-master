@@ -43,6 +43,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+app.use("/uploads", express.static("uploads"));
+
+
 
 
 
@@ -66,6 +69,58 @@ app.get("/api/articles/:id", (req, res) => {
     }
 
     res.json(results[0]); // Return the first (and only) matching article
+  });
+});
+
+// ✅ Add a New Article with Image Upload
+app.post("/api/articles", upload.single("image"), (req, res) => {
+  const { title, author, date, description } = req.body;
+  const image = req.file ? req.file.filename : null; // Save only the filename
+
+  db.query(
+    "INSERT INTO articles (title, author, date, image, description) VALUES (?, ?, ?, ?, ?)",
+    [title, author, date, image, description],
+    (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+
+      res.json({ id: result.insertId, title, author, date, image, description });
+    }
+  );
+});
+
+// ✅ Update an Article (With Image Upload)
+app.put("/api/articles/:id", upload.single("image"), (req, res) => {
+  const { id } = req.params;
+  const { title, author, date, description } = req.body;
+  const image = req.file ? req.file.filename : req.body.image; // Keep existing image if none uploaded
+
+  db.query(
+    "UPDATE articles SET title = ?, author = ?, date = ?, image = ?, description = ? WHERE id = ?",
+    [title, author, date, image, description, id],
+    (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: "Article not found" });
+      }
+
+      res.json({ message: "Article updated successfully" });
+    }
+  );
+});
+
+// ✅ Delete an Article
+app.delete("/api/articles/:id", (req, res) => {
+  const { id } = req.params;
+
+  db.query("DELETE FROM articles WHERE id = ?", [id], (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Article not found" });
+    }
+
+    res.json({ message: "Article deleted successfully" });
   });
 });
 
@@ -163,9 +218,14 @@ app.delete("/api/system-users/:id", (req, res) => {
   });
 });
 
-// ✅ Add a New Article
-app.post("/api/articles", (req, res) => {
-  const { title, author, date, image, description } = req.body;
+
+
+
+// ✅ Add a New Article with Image Upload
+app.post("/api/articles", upload.single("image"), (req, res) => {
+  const { title, author, date, description } = req.body;
+  const image = req.file ? `/uploads/${req.file.filename}` : null; // Save image path
+  
 
   if (!title || !author || !date || !description) {
     return res.status(400).json({ error: "Title, author, date, and description are required" });
@@ -180,10 +240,11 @@ app.post("/api/articles", (req, res) => {
   });
 });
 
-// ✅ Update an Article
-app.put("/api/articles/:id", (req, res) => {
-  const { title, author, date, image, description } = req.body;
+// ✅ Update an Article (Including Image)
+app.put("/api/articles/:id", upload.single("image"), (req, res) => {
+  const { title, author, date, description } = req.body;
   const { id } = req.params;
+  const image = req.file ? `/uploads/${req.file.filename}` : req.body.image; // Keep old image if no new image
 
   if (!title || !author || !date || !description) {
     return res.status(400).json({ error: "Title, author, date, and description are required" });
@@ -217,6 +278,7 @@ app.delete("/api/articles/:id", (req, res) => {
     res.json({ message: "Article deleted successfully" });
   });
 });
+
 
 
 // ✅ Fetch All Team Members

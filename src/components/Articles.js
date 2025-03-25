@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import ReactQuill from "react-quill"; // Import Quill.js
+import "react-quill/dist/quill.snow.css"; // Quill styles
 
 const Articles = () => {
   const [articles, setArticles] = useState([]);
@@ -8,37 +10,92 @@ const Articles = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [editingArticle, setEditingArticle] = useState(null);
   const [showAddArticleForm, setShowAddArticleForm] = useState(false);
-  const [expandedArticles, setExpandedArticles] = useState({});
-
   const [newArticle, setNewArticle] = useState({
     title: "",
     author: "",
     date: "",
-    image: "",
+    image: null,
     description: "",
   });
+
+  // Quill Editor Configuration
+  const modules = {
+    toolbar: [
+      [{ font: [] }],
+      [{ size: ["small", false, "large", "huge"] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ color: [] }, { background: [] }],
+      [{ script: "sub" }, { script: "super" }],
+      [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+      [{ indent: "-1" }, { indent: "+1" }],
+      [{ align: [] }],
+      ["link", "image", "video"],
+      ["clean"],
+    ],
+  };
+
+  const formats = [
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "color",
+    "background",
+    "script",
+    "list",
+    "bullet",
+    "check",
+    "indent",
+    "align",
+    "link",
+    "image",
+    "video",
+  ];
 
   useEffect(() => {
     fetchArticles();
   }, []);
 
   const fetchArticles = async () => {
+    setLoading(true);
+    setError("");
     try {
-      const response = await axios.get("/api/articles");
+      const response = await axios.get("http://localhost:5000/api/articles");
       setArticles(response.data);
-      setLoading(false);
     } catch (error) {
       setError("Failed to load articles");
+    } finally {
       setLoading(false);
     }
   };
 
+  // Handle Form Inputs
+  const handleDescriptionChange = (content) => {
+    setNewArticle({ ...newArticle, description: content });
+  };
+
+  const handleEditDescriptionChange = (content) => {
+    setEditingArticle({ ...editingArticle, description: content });
+  };
+
   const handleAddArticle = async (e) => {
     e.preventDefault();
+    setError("");
+
+    const formData = new FormData();
+    Object.entries(newArticle).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
     try {
-      const response = await axios.post("/api/articles", newArticle);
+      const response = await axios.post("http://localhost:5000/api/articles", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
       setArticles([...articles, response.data]);
-      setNewArticle({ title: "", author: "", date: "", image: "", description: "" });
+      setNewArticle({ title: "", author: "", date: "", image: null, description: "" });
       setShowAddArticleForm(false);
     } catch (error) {
       setError("Failed to add article");
@@ -48,7 +105,7 @@ const Articles = () => {
   const handleDeleteArticle = async (id) => {
     if (!window.confirm("Are you sure you want to delete this article?")) return;
     try {
-      await axios.delete(`/api/articles/${id}`);
+      await axios.delete(`http://localhost:5000/api/articles/${id}`);
       setArticles(articles.filter((article) => article.id !== id));
     } catch (error) {
       setError("Failed to delete article");
@@ -61,21 +118,27 @@ const Articles = () => {
 
   const handleUpdateArticle = async (e) => {
     e.preventDefault();
-    if (!window.confirm("Save changes to this article?")) return;
+    setError("");
+
+    const formData = new FormData();
+    Object.entries(editingArticle).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
 
     try {
-      const response = await axios.put(`/api/articles/${editingArticle.id}`, editingArticle);
-      setArticles((prevArticles) =>
-        prevArticles.map((article) => (article.id === editingArticle.id ? response.data : article))
+      const response = await axios.put(
+        `http://localhost:5000/api/articles/${editingArticle.id}`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      setArticles((prev) =>
+        prev.map((article) => (article.id === editingArticle.id ? response.data : article))
       );
       setEditingArticle(null);
     } catch (error) {
       setError("Failed to update article");
     }
-  };
-
-  const toggleExpand = (id) => {
-    setExpandedArticles((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   return (
@@ -95,57 +158,60 @@ const Articles = () => {
         />
       </div>
 
-      {/* Add Article Button */}
+      {/* Toggle Add Form */}
       <button
         onClick={() => setShowAddArticleForm(!showAddArticleForm)}
         className="bg-[#024677] text-white px-5 py-2 rounded-md shadow-md hover:bg-[#000435] transition"
       >
         {showAddArticleForm ? "✖ Hide Form" : "➕ Add New Article"}
       </button>
-
       {/* Add Article Form */}
       {showAddArticleForm && (
-        <form className="mt-4 bg-white p-4 shadow-md rounded-md" onSubmit={handleAddArticle}>
-          <input
-            type="text"
-            placeholder="Title"
-            value={newArticle.title}
-            onChange={(e) => setNewArticle({ ...newArticle, title: e.target.value })}
-            required
-            className="w-full p-2 border rounded-md mb-3"
-          />
-          <input
-            type="text"
-            placeholder="Author"
-            value={newArticle.author}
-            onChange={(e) => setNewArticle({ ...newArticle, author: e.target.value })}
-            required
-            className="w-full p-2 border rounded-md mb-3"
-          />
-          <input
-            type="date"
-            value={newArticle.date}
-            onChange={(e) => setNewArticle({ ...newArticle, date: e.target.value })}
-            required
-            className="w-full p-2 border rounded-md mb-3"
-          />
-          <input
-            type="text"
-            placeholder="Image URL"
-            value={newArticle.image}
-            onChange={(e) => setNewArticle({ ...newArticle, image: e.target.value })}
-            className="w-full p-2 border rounded-md mb-3"
-          />
-          <textarea
-            placeholder="Description"
-            value={newArticle.description}
-            onChange={(e) => setNewArticle({ ...newArticle, description: e.target.value })}
-            required
-            className="w-full p-2 border rounded-md mb-3"
-          />
-          <button type="submit" className="bg-green-600 text-white px-5 py-2 rounded-md shadow-md hover:bg-green-500 transition">
-            ✔ Add Article
-          </button>
+        <form className="mt-4 bg-white p-6 shadow-md rounded-lg max-w-lg mx-auto" onSubmit={handleAddArticle}>
+          <h3 className="text-2xl font-bold mb-5">Add New Article</h3>
+
+          <div className="space-y-4">
+            <input type="text" placeholder="Title" value={newArticle.title}
+              onChange={(e) => setNewArticle({ ...newArticle, title: e.target.value })} required className="w-full p-3 border rounded-lg" />
+
+            <input type="text" placeholder="Author" value={newArticle.author}
+              onChange={(e) => setNewArticle({ ...newArticle, author: e.target.value })} required className="w-full p-3 border rounded-lg" />
+
+            <input type="date" value={newArticle.date}
+              onChange={(e) => setNewArticle({ ...newArticle, date: e.target.value })} required className="w-full p-3 border rounded-lg" />
+
+            <input type="file" accept="image/*"
+              onChange={(e) => setNewArticle({ ...newArticle, image: e.target.files[0] })} className="w-full p-3 border rounded-lg" />
+
+            <ReactQuill value={newArticle.description} onChange={handleDescriptionChange}
+              modules={modules} formats={formats} className="w-full p-3 border rounded-lg" style={{ height: "200px" }} />
+          </div>
+
+          <button type="submit" className="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg">✔ Add Article</button>
+        </form>
+      )}
+
+      {/* Edit Article Form */}
+      {editingArticle && (
+        <form className="mt-4 bg-white p-6 shadow-md rounded-lg max-w-lg mx-auto" onSubmit={handleUpdateArticle}>
+          <h3 className="text-2xl font-bold mb-5">✏ Edit Article</h3>
+
+          <input type="text" placeholder="Title" value={editingArticle.title}
+            onChange={(e) => setEditingArticle({ ...editingArticle, title: e.target.value })} required className="w-full p-3 border rounded-lg" />
+
+          <input type="text" placeholder="Author" value={editingArticle.author}
+            onChange={(e) => setEditingArticle({ ...editingArticle, author: e.target.value })} required className="w-full p-3 border rounded-lg" />
+
+          <input type="date" value={editingArticle.date}
+            onChange={(e) => setEditingArticle({ ...editingArticle, date: e.target.value })} required className="w-full p-3 border rounded-lg" />
+
+          <input type="file" accept="image/*"
+            onChange={(e) => setEditingArticle({ ...editingArticle, image: e.target.files[0] })} className="w-full p-3 border rounded-lg" />
+
+          <ReactQuill value={editingArticle.description} onChange={handleEditDescriptionChange}
+            modules={modules} formats={formats} className="w-full p-3 border rounded-lg" style={{ height: "200px" }} />
+
+          <button type="submit" className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg">✔ Update Article</button>
         </form>
       )}
 
@@ -153,46 +219,17 @@ const Articles = () => {
       {loading ? (
         <p>Loading articles...</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-          {articles.length > 0 ? (
-            articles.map((article) => (
-              <div key={article.id} className="bg-white shadow-md p-4 rounded-md">
-                <img
-                  src={article.image || "https://via.placeholder.com/150"}
-                  alt={article.title}
-                  className="w-full h-40 object-cover rounded-md mb-3"
-                />
-                <h3 className="font-bold text-lg text-[#000435]">{article.title}</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {articles
+            .filter((article) => article.title.toLowerCase().includes(searchTerm.toLowerCase()))
+            .map((article) => (
+              <div key={article.id} className="bg-white p-4 shadow-md rounded-md border border-gray-200">
+                <h3 className="font-bold text-lg">{article.title}</h3>
                 <p className="text-gray-600"><strong>Author:</strong> {article.author}</p>
-                <p className="text-gray-600"><strong>Date:</strong> {article.date}</p>
-                <p className="text-gray-700">
-                  {expandedArticles[article.id] ? article.description : `${article.description.slice(0, 100)}...`}
-                </p>
-                <button
-                  onClick={() => toggleExpand(article.id)}
-                  className="text-[#024677] mt-2 font-semibold"
-                >
-                  {expandedArticles[article.id] ? "View Less" : "Read More"}
-                </button>
-                <div className="flex justify-between mt-4">
-                  <button
-                    onClick={() => handleEditArticle(article)}
-                    className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-400 transition"
-                  >
-                    ✏ Edit
-                  </button>
-                  <button
-                    onClick={() => handleDeleteArticle(article.id)}
-                    className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-500 transition"
-                  >
-                    ❌ Delete
-                  </button>
-                </div>
+                <button onClick={() => handleEditArticle(article)} className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-400">✏ Edit</button>
+                <button onClick={() => handleDeleteArticle(article.id)} className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-500 ml-3">❌ Delete</button>
               </div>
-            ))
-          ) : (
-            <p>No articles found.</p>
-          )}
+            ))}
         </div>
       )}
     </div>

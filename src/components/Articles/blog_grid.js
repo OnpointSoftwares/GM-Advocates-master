@@ -7,8 +7,6 @@ import Contact from "../Contact/Contact";
 import Footer from "../Footer/Footer";
 import "./articles.css";
 
-
-
 export default function BlogGrid() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,7 +15,7 @@ export default function BlogGrid() {
   // Fetch articles from API
   useEffect(() => {
     axios
-      .get("/api/articles")
+      .get("http://localhost:5000/api/articles")
       .then((response) => {
         console.log("✅ Articles fetched successfully:", response.data);
         setArticles(response.data);
@@ -34,7 +32,7 @@ export default function BlogGrid() {
     <section>
       <Navbar HomeLinkToRender={HomeNavLink} />
 
-      {/* 🔹 Background Section with Gradient and Image */}
+      {/* 🔹 Background Section */}
       <div className="articles-bg">
         <h1 className="title">Our Articles</h1>
         <p className="subtitle">Stay updated with the latest insights and news</p>
@@ -48,16 +46,12 @@ export default function BlogGrid() {
         ) : articles.length > 0 ? (
           <div className="grid md:grid-cols-2 gap-8">
             {articles.map((article) => (
-              <Link
-                key={article.id}
-                className="card-link"
-                to={`/articles/${article.id}`} // 🛠 Ensure the route matches App.js
-              >
+              <Link key={article.id} className="card-link" to={`/articles/${article.id}`}>
                 <div className="p-6 rounded-2xl shadow-lg border border-gray-200 hover:bg-gray-100 transition duration-300 transform hover:scale-105">
                   <div className="flex gap-4">
                     {/* Article Image */}
                     <img
-                      src={article.image || "https://source.unsplash.com/100x100/?news,technology"}
+                      src={article.image ? `http://localhost:5000/uploads/${article.image}` : "https://source.unsplash.com/100x100/?news,technology"}
                       alt={article.title}
                       className="w-16 h-16 rounded-lg border-2 border-blue-500"
                     />
@@ -65,29 +59,18 @@ export default function BlogGrid() {
                     <div className="flex-1">
                       <p className="text-blue-600 font-semibold">{article.author}</p>
                       <h2 className="text-xl font-bold text-[#024677]">{article.title}</h2>
-                      <p className="text-gray-600 text-sm mt-2">
-                        {article.description?.substring(0, 100)}...
-                      </p>
+                      {/* Render rich text content from text editor */}
+                      <div
+                        className="text-gray-600 text-sm mt-2"
+                        dangerouslySetInnerHTML={{
+                          __html: article.description.substring(0, 150) + "...",
+                        }}
+                      />
                       <p className="text-gray-400 text-xs mt-2">
                         📌 {new Date(article.date).toDateString()}
                       </p>
-
-                      {article.subtitle1 && (
-                        <h3 className="text-lg font-semibold mt-3 text-gray-800">
-                          {article.subtitle1}
-                        </h3>
-                      )}
-                      {article.description1 && (
-                        <p className="text-gray-600 text-sm mt-1">
-                          {article.description1.substring(0, 100)}...
-                        </p>
-                      )}
-
                       {/* 🚀 "Read More" Button */}
-                      <Link
-                        to={`/articles/${article.id}`}
-                        className="mt-4 inline-block text-blue-600 font-semibold hover:text-blue-800 transition"
-                      >
+                      <Link to={`/articles/${article.id}`} className="mt-4 inline-block text-blue-600 font-semibold hover:text-blue-800 transition">
                         Read More →
                       </Link>
                     </div>
@@ -100,6 +83,7 @@ export default function BlogGrid() {
           <p className="text-center text-gray-500">⚠️ No articles available yet.</p>
         )}
       </div>
+
       <Contact />
       <Footer />
     </section>
