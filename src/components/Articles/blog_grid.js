@@ -17,7 +17,7 @@ export default function BlogGrid() {
   // Fetch articles from API
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/articles")
+      .get("/api/articles")
       .then((response) => {
         console.log("✅ Articles fetched successfully:", response.data);
         setArticles(response.data);

@@ -14,7 +14,7 @@ const ServiceDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/practice-areas/${id}`)
+      .get(`/api/practice-areas/${id}`)
       .then((response) => {
         setService(response.data);
         setLoading(false);
