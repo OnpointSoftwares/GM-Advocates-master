@@ -12,34 +12,65 @@ const AuthLogin = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
+    
+    // Validation checks
+    if (!email || !password) {
+      setError("Please fill in both email and password.");
+      return;
+    }
+    if (!validateEmail(email)) {
+      setError("Invalid email format.");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const response = await axios.post("https://home.gmorinaadvocates.org/api/login", {
+      const response = await axios.post("http://localhost:5000/api/login", {
         email,
         password,
       });
 
+      if (!response || !response.data) {
+        throw new Error("Unexpected server response. Please try again.");
+      }
+
       if (response.data.success) {
         localStorage.setItem("token", response.data.token);
+
         let tokenPayload;
         try {
           tokenPayload = JSON.parse(atob(response.data.token.split(".")[1]));
+          if (!tokenPayload.username) {
+            throw new Error("Invalid token structure.");
+          }
         } catch (error) {
-          setError("Invalid token received. Please try again.");
+          setError("Invalid token received. Please contact support.");
           setLoading(false);
           return;
         }
+
         localStorage.setItem("username", tokenPayload.username);
         navigate("/dashboard");
       } else {
-        setError(response.data.message || "Invalid credentials");
+        setError(response.data.message || "Invalid credentials.");
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed. Please try again.");
+      if (err.response) {
+        setError(err.response.data?.message || "Login failed. Please check your credentials.");
+      } else if (err.request) {
+        setError("Network error. Please check your connection and try again.");
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -93,6 +124,7 @@ const AuthLogin = () => {
           <button
             type="submit"
             className="w-full bg-[#024677] text-white py-2 rounded-md hover:bg-[#000435] transition duration-300"
+            disabled={loading}
           >
             {loading ? "Logging in..." : "Login"}
           </button>

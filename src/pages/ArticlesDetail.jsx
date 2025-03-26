@@ -31,7 +31,7 @@ export default function ArticleDetail() {
         setArticle(response.data);
         setLoading(false);
         setArticleUrl(window.location.href);
-        document.title = response.data.title;
+        document.title = response.data.title || "Article Details";
       })
       .catch((error) => {
         console.error("❌ Error fetching article:", error.response ? error.response.data : error.message);
@@ -59,6 +59,7 @@ export default function ArticleDetail() {
             <FaArrowLeft className="mr-2" /> Back to Articles
           </button>
 
+          {/* Article Content */}
           {loading ? (
             <p className="text-center text-gray-500 mt-6">🔄 Loading article...</p>
           ) : error ? (
@@ -76,7 +77,7 @@ export default function ArticleDetail() {
               {/* Article Image */}
               <div className="mt-6">
                 <img 
-                  src={article.image ? `/uploads/${article.image}` : "https://source.unsplash.com/800x400/?news"} 
+                  src={article.image ? `https://home.gmorinaadvocates.org/uploads/${article.image}` : "https://source.unsplash.com/800x400/?news"} 
                   alt="blog" 
                   className="w-full rounded-lg shadow-md"
                 />
@@ -97,7 +98,7 @@ export default function ArticleDetail() {
                 )
               ))}
 
-              {/* Next Article Teaser (Dynamic) */}
+              {/* Next Article Teaser */}
               <div className="mt-8 p-4 bg-blue-100 border-l-4 border-blue-500 text-blue-900">
                 <p className="text-lg font-semibold">{nextTeaser}</p>
               </div>
