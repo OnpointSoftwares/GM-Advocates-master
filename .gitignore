@@ -1,25 +1,34 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
-# Ignore node_modules directory
-/node_modules/
-/.pnp
-# Ignore Yarn Plug'n'Play file
+# 📌 Dependencies
+# Ignore node_modules directory (contains installed packages, not needed in Git)
+node_modules/
+.pnp
+
+# 📌 Yarn Plug'n'Play file (not needed in version control)
 .pnp.js
 
-# testing
-/coverage
+# 📌 Testing
+# Ignore code coverage reports (generated during tests)
+coverage/
 
-# production
-/build
+# 📌 Production
+# Ignore build folder (contains compiled code, not source code)
+build/
 
-# misc
+# 📌 Miscellaneous
+# Ignore macOS system file (automatically created)
 .DS_Store
+
+# 📌 Environment Variables
+# Ignore local environment files (contain sensitive credentials & API keys)
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
+# 📌 Debugging Logs
+# Ignore npm and Yarn debug logs (generated when errors occur)
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
