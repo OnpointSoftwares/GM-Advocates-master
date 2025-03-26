@@ -16,18 +16,6 @@ import BlogGrid from "./components/Articles/blog_grid";
 // 🔹 Authentication Pages
 import Login from "./pages/Login";
 
-// 🔹 Practice Areas
-import Litigation from "./components/Practise/Litigation";
-import TechnologyLaw from "./components/Practise/TechnologyLaw";
-import CorporateCommercial from "./components/Practise/CorporateCommercial";
-import RealEstateProperty from "./components/Practise/RealEstateProperty";
-import AviationLawPractise from "./components/Practise/AviationLawPractise";
-import ProcurementLaw from "./components/Practise/ProcurementLaw";
-import DataProtection from "./components/Practise/DataProtection";
-import FamilyMarriage from "./components/Practise/FamilyMarriage";
-import NotarialServices from "./components/Practise/NotarialServices";
-import InvestmentFranchise from "./components/Practise/InvestmentFranchise";
-
 // 🔹 People
 import People from "./components/People/People";
 import PersonProfile from "./components/People/PersonProfile";
@@ -43,33 +31,25 @@ import ServiceDetails from "./components/ServiceDetails";
 // 🔹 Floating Contact Menu Component
 const FloatingContactMenu = () => {
   return (
-    <div className="fixed bottom-4 right-4 flex flex-col gap-3 z-50 md:bottom-6 md:right-6 lg:bottom-8 lg:right-8">
-      {/* Call Button - Green */}
-      <a 
-        href="tel:+254786437754"
-        className="bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 transition-all flex items-center justify-center w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
-        title="Call Us"
-      >
-        <i className="fas fa-phone-alt text-lg md:text-xl lg:text-2xl"></i>
-      </a>
+    <div className="fixed bottom-6 left-[80%] sm:left-auto sm:right-6 transform -translate-x-1/2 sm:translate-x-0 flex flex-col gap-3 z-50">
       
-      {/* WhatsApp Button - WhatsApp Green */}
-      <a 
-        href="https://wa.me/254786437754"
-        className="bg-[#25D366] text-white p-3 rounded-full shadow-lg hover:bg-green-600 transition-all flex items-center justify-center w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
-        title="WhatsApp Us"
-      >
-        <i className="fab fa-whatsapp text-lg md:text-xl lg:text-2xl"></i>
-      </a> 
-
-      {/* Email Button - Blue */}
-      <a 
-        href="mailto:gmorinaadvocates@gmail.com"
-        className="bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition-all flex items-center justify-center w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
-        title="Email Us"
-      >
-        <i className="fas fa-envelope text-lg md:text-xl lg:text-2xl"></i>
+      {/* Call Button */}
+      <a href="tel:+254786437754" className="bg-green-500 text-white p-2 sm:p-3 rounded-full shadow-md hover:bg-green-600 transition-all flex items-center justify-center w-10 sm:w-12 lg:w-14 h-10 sm:h-12 lg:h-14" title="Call Us">
+        <i className="fas fa-phone-alt text-sm sm:text-base lg:text-lg"></i>
       </a>
+
+      {/* WhatsApp Button */}
+      <a href="https://wa.me/254786437754" target="_blank" rel="noopener noreferrer" className="bg-green-600 text-white p-2 sm:p-3 rounded-full shadow-md hover:bg-green-700 transition-all flex items-center justify-center w-10 sm:w-12 lg:w-14 h-10 sm:h-12 lg:h-14" title="WhatsApp">
+        <i className="fab fa-whatsapp text-sm sm:text-base lg:text-lg"></i>
+      </a>
+
+      {/* Email Button - Sends to BOTH emails */}
+      <a href="mailto:info@gmorinaadvocates.com,gmorinaadvocates@gmail.com" 
+         className="bg-blue-500 text-white p-2 sm:p-3 rounded-full shadow-md hover:bg-blue-600 transition-all flex items-center justify-center w-10 sm:w-12 lg:w-14 h-10 sm:h-12 lg:h-14" 
+         title="Email Us">
+        <i className="fas fa-envelope text-sm sm:text-base lg:text-lg"></i>
+      </a>
+
     </div>
   );
 };
@@ -93,18 +73,6 @@ function App() {
        
           {/* 🔹 Authentication Pages */}
           <Route path="/login" element={<Login />} />
-
-          {/* 🔹 Practice Areas */}
-          <Route path="/procurement-law" element={<ProcurementLaw />} />
-          <Route path="/litigation-dispute" element={<Litigation />} />
-          <Route path="/technology-ip-internetlaw" element={<TechnologyLaw />} />
-          <Route path="/corporate-commercial-law" element={<CorporateCommercial />} />
-          <Route path="/real-estate-property-law" element={<RealEstateProperty />} />
-          <Route path="/aviation-law-practise" element={<AviationLawPractise />} />
-          <Route path="/it-data-protection-crypto" element={<DataProtection />} />
-          <Route path="/family-marriage-succession" element={<FamilyMarriage />} />
-          <Route path="/notarial-services-certificates" element={<NotarialServices />} />
-          <Route path="/investment-franchise" element={<InvestmentFranchise />} />
 
           {/* 🔹 People */}
           <Route path="/our-people" element={<People />} />

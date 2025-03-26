@@ -6,7 +6,7 @@ import Contact from "../Contact/Contact";
 import Footer from "../Footer/Footer";
 import HomeNavLink from "../Navbar/HomeNavLink";
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "https://home.gmorinaadvocates.org";
 
 function PersonProfile() {
   const { name } = useParams();

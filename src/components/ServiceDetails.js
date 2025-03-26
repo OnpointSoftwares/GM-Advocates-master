@@ -14,7 +14,7 @@ const ServiceDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`/api/practice-areas/${id}`)
+      .get(`https://home.gmorinaadvocates.org/api/practice-areas/${id}`)
       .then((response) => {
         setService(response.data);
         setLoading(false);
@@ -79,7 +79,7 @@ const ServiceDetails = () => {
           {service.image && (
             <div className="mt-6">
               <img 
-                src={`http://localhost:5000${service.image}`} 
+                src={`https://home.gmorinaadvocates.org${service.image}`} 
                 alt={service.title} 
                 className="w-full max-w-3xl mx-auto rounded-lg shadow-lg"
               />

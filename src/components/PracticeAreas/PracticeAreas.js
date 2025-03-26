@@ -11,7 +11,7 @@ const PracticeAreas = () => {
 
   useEffect(() => {
     axios
-      .get("/api/practice-areas")
+      .get(" https://home.gmorinaadvocates.org/api/practice-areas")
       .then((response) => {
         console.log("Practice Areas Data:", response.data); // Debugging
         setPracticeAreas(response.data);
@@ -61,7 +61,7 @@ const PracticeAreas = () => {
                 {/* Image */}
                 {area.image ? (
                   <img
-                    src={`http://localhost:5000${area.image}`}
+                    src={`https://home.gmorinaadvocates.org${area.image}`}
                     alt={area.title}
                     className="w-full h-48 object-cover"
                     onError={(e) => (e.target.style.display = "none")}

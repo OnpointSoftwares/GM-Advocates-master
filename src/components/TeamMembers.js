@@ -18,7 +18,7 @@ const TeamMembers = () => {
     profile_picture: null,
   });
 
-  const BASE_URL = "http://localhost:5000";
+  const BASE_URL = "https://home.gmorinaadvocates.org";
 
   useEffect(() => {
     fetchTeamMembers();
@@ -26,7 +26,7 @@ const TeamMembers = () => {
 
   const fetchTeamMembers = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/team-members`);
+      const response = await axios.get(`${BASE_URL}https://home.gmorinaadvocates.org/api/team-members`);
       setTeamMembers(response.data);
       setLoading(false);
     } catch (error) {
@@ -52,7 +52,7 @@ const TeamMembers = () => {
         formData.append("profile_picture", newMember.profile_picture);
       }
 
-      const response = await axios.post(`${BASE_URL}/api/team-members`, formData, {
+      const response = await axios.post(`${BASE_URL}https://home.gmorinaadvocates.org/api/team-members`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -83,7 +83,7 @@ const TeamMembers = () => {
         formData.append("profile_picture", editingMember.profile_picture || "");
       }
 
-      const response = await axios.put(`${BASE_URL}/api/team-members/${editingMember.id}`, formData, {
+      const response = await axios.put(`${BASE_URL}https://home.gmorinaadvocates.org/api/team-members/${editingMember.id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -99,7 +99,7 @@ const TeamMembers = () => {
 
   const handleDeleteMember = async (id) => {
     try {
-      await axios.delete(`${BASE_URL}/api/team-members/${id}`);
+      await axios.delete(`${BASE_URL}https://home.gmorinaadvocates.org/api/team-members/${id}`);
       setTeamMembers(teamMembers.filter((member) => member.id !== id));
     } catch (error) {
       setError("Failed to delete member");

@@ -62,7 +62,7 @@ const Articles = () => {
     setLoading(true);
     setError("");
     try {
-      const response = await axios.get("http://localhost:5000/api/articles");
+      const response = await axios.get("https://home.gmorinaadvocates.org/api/articles");
       setArticles(response.data);
     } catch (error) {
       setError("Failed to load articles");
@@ -90,7 +90,7 @@ const Articles = () => {
     });
 
     try {
-      const response = await axios.post("http://localhost:5000/api/articles", formData, {
+      const response = await axios.post("https://home.gmorinaadvocates.org/api/articles", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -105,7 +105,7 @@ const Articles = () => {
   const handleDeleteArticle = async (id) => {
     if (!window.confirm("Are you sure you want to delete this article?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/articles/${id}`);
+      await axios.delete(`https://home.gmorinaadvocates.org/api/articles/${id}`);
       setArticles(articles.filter((article) => article.id !== id));
     } catch (error) {
       setError("Failed to delete article");
@@ -127,7 +127,7 @@ const Articles = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/articles/${editingArticle.id}`,
+        `https://home.gmorinaadvocates.org/api/articles/${editingArticle.id}`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

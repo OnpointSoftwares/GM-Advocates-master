@@ -18,7 +18,7 @@ const AuthLogin = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post("/api/login", {
+      const response = await axios.post("https://home.gmorinaadvocates.org/api/login", {
         email,
         password,
       });

@@ -9,7 +9,7 @@ const Reports = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const { data } = await axios.get("/api/reports");
+        const { data } = await axios.get("https://home.gmorinaadvocates.org/api/reports");
         setStats(data);
       } catch {
         setError("Failed to load system statistics");

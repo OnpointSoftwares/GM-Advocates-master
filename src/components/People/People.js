@@ -9,7 +9,7 @@ import Contact from "../Contact/Contact";
 import Footer from "../Footer/Footer";
 import HomeNavLink from "../Navbar/HomeNavLink";
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "https://home.gmorinaadvocates.org";
 
 function People() {
   const [teamMembers, setTeamMembers] = useState([]);
@@ -24,7 +24,7 @@ function People() {
     setLoading(true);
     setError("");
     try {
-      const response = await axios.get(`${BASE_URL}/api/team-members`);
+      const response = await axios.get(`${BASE_URL}https://home.gmorinaadvocates.org/api/team-members`);
       setTeamMembers(response.data);
     } catch (error) {
       setError("Failed to load team members. Please try again.");

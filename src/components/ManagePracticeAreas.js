@@ -37,7 +37,8 @@ const ManagePracticeAreas = () => {
     if (formData.image) form.append("image", formData.image);
 
     if (editingId) {
-      await axios.put(`http://localhost:5000/api/practice-areas/${editingId}`, form);
+      await axios.put(` https://home.gmorinaadvocates.org/api/practice-areas/${editingId}`, form);
+
     } else {
       await axios.post("/api/practice-areas", form);
     }
@@ -58,7 +59,7 @@ const ManagePracticeAreas = () => {
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:5000/api/practice-areas/${id}`);
+    await axios.delete(` https://home.gmorinaadvocates.org/api/practice-areas/${id}`);
     fetchPracticeAreas();
   };
 
@@ -132,7 +133,7 @@ const ManagePracticeAreas = () => {
                 <td className="border p-2">
                   {area.image && (
                     <img
-                      src={`http://localhost:5000/uploads/${area.image}`}
+                      src={` https://home.gmorinaadvocates.org/uploads/${area.image}`}
                       alt={area.title}
                       className="w-16 h-16 object-cover rounded"
                     />

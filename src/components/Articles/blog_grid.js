@@ -15,7 +15,7 @@ export default function BlogGrid() {
   // Fetch articles from API
   useEffect(() => {
     axios
-      .get("/api/articles")
+      .get(" https://home.gmorinaadvocates.org/api/articles")
       .then((response) => {
         console.log("✅ Articles fetched successfully:", response.data);
         setArticles(response.data);
@@ -51,7 +51,7 @@ export default function BlogGrid() {
                   <div className="flex gap-4">
                     {/* Article Image */}
                     <img
-                      src={article.image ? `/uploads/${article.image}` : "https://source.unsplash.com/100x100/?news,technology"}
+                      src={article.image ? `https://home.gmorinaadvocates.org/uploads/${article.image}` : "https://source.unsplash.com/100x100/?news,technology"}
                       alt={article.title}
                       className="w-16 h-16 rounded-lg border-2 border-blue-500"
                     />
@@ -70,7 +70,7 @@ export default function BlogGrid() {
                         📌 {new Date(article.date).toDateString()}
                       </p>
                       {/* 🚀 "Read More" Button */}
-                      <Link to={`/articles/${article.id}`} className="mt-4 inline-block text-blue-600 font-semibold hover:text-blue-800 transition">
+                      <Link to={` https://home.gmorinaadvocates.org/articles/${article.id}`} className="mt-4 inline-block text-blue-600 font-semibold hover:text-blue-800 transition">
                         Read More →
                       </Link>
                     </div>

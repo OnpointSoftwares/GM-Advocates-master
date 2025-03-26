@@ -25,7 +25,7 @@ export default function ArticleDetail() {
 
   useEffect(() => {
     axios
-      .get(`/api/articles/${id}`)
+      .get(`https://home.gmorinaadvocates.org/api/articles/${id}`)
       .then((response) => {
         console.log("✅ Article fetched successfully:", response.data);
         setArticle(response.data);

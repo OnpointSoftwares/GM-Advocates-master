@@ -10,7 +10,7 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 const app = express();
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: "https://home.gmorinaadvocates.org", credentials: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Serve uploaded files
 
 

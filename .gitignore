@@ -13,8 +13,10 @@ node_modules/
 coverage/
 
 # 📌 Production
-# Ignore build folder (contains compiled code, not source code)
+# Ignore build and dist folders (contain compiled code, not source code)
 build/
+dist/
+dist-*/
 
 # 📌 Miscellaneous
 # Ignore macOS system file (automatically created)
