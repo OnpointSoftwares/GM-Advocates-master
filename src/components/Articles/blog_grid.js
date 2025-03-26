@@ -15,7 +15,7 @@ export default function BlogGrid() {
   // Fetch articles from API
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/articles")
+      .get("/api/articles")
       .then((response) => {
         console.log("✅ Articles fetched successfully:", response.data);
         setArticles(response.data);
@@ -51,7 +51,7 @@ export default function BlogGrid() {
                   <div className="flex gap-4">
                     {/* Article Image */}
                     <img
-                      src={article.image ? `http://localhost:5000/uploads/${article.image}` : "https://source.unsplash.com/100x100/?news,technology"}
+                      src={article.image ? `/uploads/${article.image}` : "https://source.unsplash.com/100x100/?news,technology"}
                       alt={article.title}
                       className="w-16 h-16 rounded-lg border-2 border-blue-500"
                     />

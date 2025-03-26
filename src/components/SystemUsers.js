@@ -62,7 +62,7 @@ const SystemUsers = () => {
   const handleDeleteUser = async (id) => {
     if (!window.confirm("Are you sure you want to remove this user?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/system-users/${id}`);
+      await axios.delete(`/api/system-users/${id}`);
       setUsers((prevUsers) => prevUsers.filter((user) => (user.id || user._id) !== id));
     } catch (error) {
       setError("Failed to delete user. Please try again.");
@@ -84,7 +84,7 @@ const SystemUsers = () => {
     if (!editingUser) return;
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/system-users/${editingUser.id || editingUser._id}`, editedUser, {
+      const response = await axios.put(`/api/system-users/${editingUser.id || editingUser._id}`, editedUser, {
         headers: {
           "Content-Type": "application/json",
         },

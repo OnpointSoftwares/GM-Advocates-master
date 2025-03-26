@@ -11,7 +11,7 @@ const PracticeAreas = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/practice-areas")
+      .get("/api/practice-areas")
       .then((response) => {
         console.log("Practice Areas Data:", response.data); // Debugging
         setPracticeAreas(response.data);

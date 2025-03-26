@@ -25,7 +25,7 @@ export default function ArticleDetail() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/articles/${id}`)
+      .get(`/api/articles/${id}`)
       .then((response) => {
         console.log("✅ Article fetched successfully:", response.data);
         setArticle(response.data);
@@ -76,7 +76,7 @@ export default function ArticleDetail() {
               {/* Article Image */}
               <div className="mt-6">
                 <img 
-                  src={article.image ? `http://localhost:5000/uploads/${article.image}` : "https://source.unsplash.com/800x400/?news"} 
+                  src={article.image ? `/uploads/${article.image}` : "https://source.unsplash.com/800x400/?news"} 
                   alt="blog" 
                   className="w-full rounded-lg shadow-md"
                 />
