@@ -1,9 +1,9 @@
 .home {
-  height: 80vh;
+  height: 90vh;
   width: 100vw;
   margin: 0 auto;
-  padding: 4vw;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+  padding: 2vw;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
     url("../../assets/universe-bg.jpg");
   background-attachment: fixed;
   background-size: cover;
@@ -11,56 +11,122 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: 'Playfair Display', serif;
 }
 
 .slide {
-  height: 80vh;
+  height: 90vh;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
+  gap: 4rem;
+  padding: 0 2rem;
 }
+
 .slideimg {
-  width: 30vw;
+  width: 35vw;
   height: auto;
   object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
 }
+
+.slideimg:hover {
+  transform: scale(1.02);
+}
+
 .slidecontent {
-  width: 25vw;
+  width: 35vw;
   display: flex;
   flex-direction: column;
+  gap: 2rem;
+}
 
-  justify-content: space-between;
-}
 .slidecontent h {
-  font-size: x-large;
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  font-family: 'Playfair Display', serif;
 }
+
 .slideBtn {
   margin: 1rem 0;
   width: fit-content;
-  border: 1px solid #024677;
+  border: 2px solid #024677;
   background-color: #024677;
-  padding: 0.5rem 0.8rem;
-  font-weight: 500;
+  padding: 0.8rem 1.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
   color: white;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  border-radius: 30px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(2, 70, 119, 0.2);
 }
+
 .slideBtn:hover {
   background: white;
-  color: #000435;
-  border: 1px solid white;
-  transform: scale(1.1);
+  color: #024677;
+  border: 2px solid white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(2, 70, 119, 0.3);
 }
+
+.value-item {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.value-item:hover {
+  transform: translateX(10px);
+}
+
+.value-item i {
+  color: #024677;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.value-item h {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.value-item p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Inter', sans-serif;
+}
+
 .homeTitle {
   color: white;
 }
+
 .horizontal-bar {
   margin: 1.25rem 0;
   width: 100px;
   height: 3px;
   background-color: rgb(199, 66, 199);
 }
+
 .homeText {
   padding: 1.5rem 4rem;
   font-size: large;
@@ -68,56 +134,87 @@
   letter-spacing: 1px;
   color: aqua;
 }
-.value-item {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: center;
-}
-.value-item i {
-  color: #024677;
-  font-size: xx-large;
-}
+
 @media screen and (max-width: 1200px) {
   .slideimg {
-    width: 30vw;
-    height: 30vw;
+    width: 40vw;
+  }
+  
+  .slidecontent {
+    width: 40vw;
+  }
+  
+  .slidecontent h {
+    font-size: 2rem;
   }
 }
 
 @media screen and (max-width: 920px) {
   .slidecontent {
-    width: 30vw;
+    width: 45vw;
+  }
+  
+  .slideimg {
+    width: 45vw;
   }
 }
+
 @media screen and (max-width: 768px) {
   .slide {
     flex-direction: column;
+    gap: 2rem;
+    padding: 2rem;
   }
+  
   .slideimg {
-    width: 60vw;
+    width: 80vw;
     height: auto;
   }
+  
   .valueimg {
     display: none;
   }
+  
   .slidecontent {
-    width: 60vw;
+    width: 80vw;
+    text-align: center;
+    align-items: center;
   }
-  .value-item i {
-    font-size: x-large;
+  
+  .value-item {
+    align-items: center;
+    text-align: center;
+  }
+  
+  .slidecontent h {
+    font-size: 1.8rem;
+  }
+  
+  .value-item h {
+    font-size: 1.3rem;
+  }
+  
+  .value-item p {
+    font-size: 1rem;
   }
 }
+
 @media screen and (max-width: 480px) {
-  .homeTitle {
-    font-size: 1.6rem;
-    padding: 1.5rem 2rem;
+  .slide {
+    padding: 1rem;
   }
-  .homeText {
-    font-size: 1.3rem;
-    padding: 1.5rem 2rem;
-  }
+  
   .slidecontent h {
-    font-size: large;
+    font-size: 1.5rem;
+  }
+  
+  .slideBtn {
+    font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  }
+  
+  .value-item {
+    padding: 1rem;
   }
 }

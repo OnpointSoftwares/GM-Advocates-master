@@ -2,22 +2,32 @@ import React, { useEffect } from "react";
 import "./Home.css";
 import sliderImage from "../../assets/slide1.jpeg";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Navigation, Pagination, Autoplay, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css/autoplay";
+import "swiper/css/effect-fade";
 import logo from "../../assets/logo.jpeg";
 import { motion } from "framer-motion";
 import { fadeIn } from "../../variants";
 import corevalueImg from "../../assets/core-value.jpeg";
 import { Link as ScrollLink } from "react-scroll";
 
-
 function Home() {
   useEffect(() => {
     window.scrollTo(0, 0);
+    
+    // Add Google Fonts
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+    
+    return () => {
+      document.head.removeChild(link);
+    };
   }, []);
 
   window.onbeforeunload = function () {
@@ -28,16 +38,19 @@ function Home() {
     <>
       <section id="home" className="home">
         <Swiper
-          modules={[Navigation, Pagination, Autoplay]}
+          modules={[Navigation, Pagination, Autoplay, EffectFade]}
           navigation
-          pagination={{ clickable: true }}
-          autoplay={{ delay: 10000 }}
+          pagination={{ clickable: true, dynamicBullets: true }}
+          autoplay={{ delay: 5000, disableOnInteraction: false }}
+          effect="fade"
+          fadeEffect={{ crossFade: true }}
           slidesPerView={1}
+          loop={true}
         >
           <SwiperSlide>
             <div className="slide">
               <motion.div
-                variants={fadeIn("left", 0.2)}
+                variants={fadeIn("left", 0.3)}
                 initial="hidden"
                 whileInView={"show"}
                 viewport={{ once: false, amount: 0.7 }}
@@ -45,12 +58,12 @@ function Home() {
                 <img
                   className="slideimg"
                   src={sliderImage}
-                  alt="sliderimage"
-                ></img>
+                  alt="Legal Excellence"
+                />
               </motion.div>
               <div className="slidecontent">
                 <motion.h
-                  variants={fadeIn("right", 0.2)}
+                  variants={fadeIn("right", 0.3)}
                   initial="hidden"
                   whileInView={"show"}
                   viewport={{ once: false, amount: 0.7 }}
@@ -60,7 +73,7 @@ function Home() {
                 </motion.h>
 
                 <motion.button
-                  variants={fadeIn("left", 0.2)}
+                  variants={fadeIn("up", 0.4)}
                   initial="hidden"
                   whileInView={"show"}
                   viewport={{ once: false, amount: 0.7 }}
@@ -83,16 +96,20 @@ function Home() {
           <SwiperSlide>
             <div className="slide">
               <motion.div
-                variants={fadeIn("left", 0.2)}
+                variants={fadeIn("left", 0.3)}
                 initial="hidden"
                 whileInView={"show"}
                 viewport={{ once: false, amount: 0.7 }}
               >
-                <img className="slideimg" src={logo} alt="sliderimage"></img>
+                <img 
+                  className="slideimg" 
+                  src={logo} 
+                  alt="GM Orina & Co. Advocates"
+                />
               </motion.div>
               <div className="slidecontent">
                 <motion.h
-                  variants={fadeIn("right", 0.2)}
+                  variants={fadeIn("right", 0.3)}
                   initial="hidden"
                   whileInView={"show"}
                   viewport={{ once: false, amount: 0.7 }}
@@ -102,7 +119,7 @@ function Home() {
                   legal landscape.
                 </motion.h>
                 <motion.button
-                  variants={fadeIn("left", 0.2)}
+                  variants={fadeIn("up", 0.4)}
                   initial="hidden"
                   whileInView={"show"}
                   viewport={{ once: false, amount: 0.7 }}
@@ -126,7 +143,7 @@ function Home() {
             <div className="slide">
               <motion.div
                 className="valueimg"
-                variants={fadeIn("left", 0.2)}
+                variants={fadeIn("left", 0.3)}
                 initial="hidden"
                 whileInView={"show"}
                 viewport={{ once: false, amount: 0.7 }}
@@ -134,18 +151,18 @@ function Home() {
                 <img
                   className="slideimg"
                   src={corevalueImg}
-                  alt="sliderimage"
-                ></img>
+                  alt="Our Core Values"
+                />
               </motion.div>
               <div className="slidecontent">
                 <motion.div
-                  variants={fadeIn("right", 0.2)}
+                  variants={fadeIn("right", 0.3)}
                   initial="hidden"
                   whileInView={"show"}
                   viewport={{ once: false, amount: 0.7 }}
                 >
                   <div className="value-item">
-                    <i class="bi bi-patch-check-fill"></i>
+                    <i className="bi bi-patch-check-fill"></i>
                     <h>Effectiveness</h>
                     <p>
                       We recognize that our client's concerns are crucial. We
@@ -154,7 +171,7 @@ function Home() {
                     </p>
                   </div>
                   <div className="value-item">
-                    <i class="bi bi-award-fill"></i>
+                    <i className="bi bi-award-fill"></i>
                     <h>Performance Excellence</h>
                     <p>
                       We are responsible professionals. We strive to meet and
@@ -162,7 +179,7 @@ function Home() {
                     </p>
                   </div>
                   <div className="value-item">
-                    <i class="bi bi-shield-fill-check"></i>
+                    <i className="bi bi-shield-fill-check"></i>
                     <h>Integrity</h>
                     <p>
                       We recognize that long-lasting and successful business
@@ -172,7 +189,7 @@ function Home() {
                   </div>
                 </motion.div>
                 <motion.button
-                  variants={fadeIn("left", 0.2)}
+                  variants={fadeIn("up", 0.4)}
                   initial="hidden"
                   whileInView={"show"}
                   viewport={{ once: false, amount: 0.7 }}
@@ -193,8 +210,6 @@ function Home() {
           </SwiperSlide>
         </Swiper>
       </section>
-
-      {/* Add Practice Areas Section Below About Us */}
     </>
   );
 }
