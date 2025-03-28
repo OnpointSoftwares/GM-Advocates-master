@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import ReactQuill from "react-quill"; // Import Quill.js
-import "react-quill/dist/quill.snow.css"; // Quill styles
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { Loader2, Search, Plus, X, Edit2, Trash2, Save, Image } from "lucide-react";
 
 const Articles = () => {
   const [articles, setArticles] = useState([]);
@@ -142,53 +143,225 @@ const Articles = () => {
   };
 
   return (
-    <div className="p-6 bg-[#dcdcdc] min-h-screen">
-      <h2 className="text-3xl font-semibold text-[#000435] mb-6">📰 Manage Articles</h2>
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">Manage Articles</h2>
+        <button
+          onClick={() => setShowAddArticleForm(!showAddArticleForm)}
+          className={`flex items-center gap-2 px-4 py-2 rounded-md transition-colors ${showAddArticleForm ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-600 hover:bg-blue-700'} text-white`}
+        >
+          {showAddArticleForm ? (
+            <>
+              <X className="w-5 h-5" /> Cancel
+            </>
+          ) : (
+            <>
+              <Plus className="w-5 h-5" /> New Article
+            </>
+          )}
+        </button>
+      </div>
 
-      {error && <p className="text-red-600">{error}</p>}
+      {error && (
+        <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-red-600 flex items-center gap-2">
+            <X className="w-5 h-5" /> {error}
+          </p>
+        </div>
+      )}
 
       {/* Search Bar */}
-      <div className="mb-4">
+      <div className="relative mb-6">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
         <input
           type="text"
           placeholder="Search articles..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full p-2 border rounded-md shadow-md"
+          className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
       </div>
 
-      {/* Toggle Add Form */}
-      <button
-        onClick={() => setShowAddArticleForm(!showAddArticleForm)}
-        className="bg-[#024677] text-white px-5 py-2 rounded-md shadow-md hover:bg-[#000435] transition"
-      >
-        {showAddArticleForm ? "✖ Hide Form" : "➕ Add New Article"}
-      </button>
-      {/* Add Article Form */}
-      {showAddArticleForm && (
-        <form className="mt-4 bg-white p-6 shadow-md rounded-lg max-w-lg mx-auto" onSubmit={handleAddArticle}>
-          <h3 className="text-2xl font-bold mb-5">Add New Article</h3>
 
-          <div className="space-y-4">
-            <input type="text" placeholder="Title" value={newArticle.title}
-              onChange={(e) => setNewArticle({ ...newArticle, title: e.target.value })} required className="w-full p-3 border rounded-lg" />
+      {/* Add/Edit Article Form */}
+      {(showAddArticleForm || editingArticle) && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <form 
+            className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6"
+            onSubmit={editingArticle ? handleUpdateArticle : handleAddArticle}
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-bold text-gray-800">
+                {editingArticle ? 'Edit Article' : 'Add New Article'}
+              </h3>
+              <button
+                type="button"
+                onClick={() => editingArticle ? setEditingArticle(null) : setShowAddArticleForm(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
-            <input type="text" placeholder="Author" value={newArticle.author}
-              onChange={(e) => setNewArticle({ ...newArticle, author: e.target.value })} required className="w-full p-3 border rounded-lg" />
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                <input
+                  type="text"
+                  placeholder="Enter article title"
+                  value={editingArticle ? editingArticle.title : newArticle.title}
+                  onChange={(e) => editingArticle 
+                    ? setEditingArticle({ ...editingArticle, title: e.target.value })
+                    : setNewArticle({ ...newArticle, title: e.target.value })
+                  }
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
 
-            <input type="date" value={newArticle.date}
-              onChange={(e) => setNewArticle({ ...newArticle, date: e.target.value })} required className="w-full p-3 border rounded-lg" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Author</label>
+                <input
+                  type="text"
+                  placeholder="Enter author name"
+                  value={editingArticle ? editingArticle.author : newArticle.author}
+                  onChange={(e) => editingArticle
+                    ? setEditingArticle({ ...editingArticle, author: e.target.value })
+                    : setNewArticle({ ...newArticle, author: e.target.value })
+                  }
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
 
-            <input type="file" accept="image/*"
-              onChange={(e) => setNewArticle({ ...newArticle, image: e.target.files[0] })} className="w-full p-3 border rounded-lg" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                <input
+                  type="date"
+                  value={editingArticle ? editingArticle.date : newArticle.date}
+                  onChange={(e) => editingArticle
+                    ? setEditingArticle({ ...editingArticle, date: e.target.value })
+                    : setNewArticle({ ...newArticle, date: e.target.value })
+                  }
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
 
-            <ReactQuill value={newArticle.description} onChange={handleDescriptionChange}
-              modules={modules} formats={formats} className="w-full p-3 border rounded-lg" style={{ height: "200px" }} />
-          </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Image</label>
+                <div className="flex items-center gap-4">
+                  <label className="flex-1 cursor-pointer border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-500 transition-colors">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => editingArticle
+                        ? setEditingArticle({ ...editingArticle, image: e.target.files[0] })
+                        : setNewArticle({ ...newArticle, image: e.target.files[0] })
+                      }
+                      className="hidden"
+                    />
+                    <div className="flex flex-col items-center gap-2 text-gray-600">
+                      <Image className="w-6 h-6" />
+                      <span className="text-sm">Click to upload image</span>
+                    </div>
+                  </label>
+                  {(editingArticle?.image || newArticle.image) && (
+                    <div className="w-20 h-20 relative">
+                      <img
+                        src={editingArticle?.image ? `https://home.gmorinaadvocates.org/uploads/${editingArticle.image}` : URL.createObjectURL(newArticle.image)}
+                        alt="Preview"
+                        className="w-full h-full object-cover rounded"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
 
-          <button type="submit" className="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg">✔ Add Article</button>
-        </form>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Content</label>
+                <ReactQuill
+                  value={editingArticle ? editingArticle.description : newArticle.description}
+                  onChange={editingArticle ? handleEditDescriptionChange : handleDescriptionChange}
+                  modules={modules}
+                  formats={formats}
+                  className="bg-white rounded-md"
+                  style={{ height: "200px" }}
+                />
+              </div>
+            </div>
+
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => editingArticle ? setEditingArticle(null) : setShowAddArticleForm(false)}
+                className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              >
+                {loading ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  <>
+                    <Save className="w-5 h-5" />
+                    {editingArticle ? 'Update' : 'Save'} Article
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {/* Articles List */}
+      {loading && !articles.length ? (
+        <div className="flex items-center justify-center h-64">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {articles
+            .filter(article => 
+              article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              article.author.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .map(article => (
+              <div key={article.id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
+                {article.image && (
+                  <img
+                    src={`https://home.gmorinaadvocates.org/uploads/${article.image}`}
+                    alt={article.title}
+                    className="w-full h-48 object-cover"
+                  />
+                )}
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">{article.title}</h3>
+                  <p className="text-sm text-gray-600 mb-4">
+                    By {article.author} • {new Date(article.date).toLocaleDateString()}
+                  </p>
+                  <div className="flex justify-end gap-2">
+                    <button
+                      onClick={() => handleEditArticle(article)}
+                      className="p-2 text-yellow-600 hover:bg-yellow-50 rounded-md transition-colors"
+                    >
+                      <Edit2 className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteArticle(article.id)}
+                      className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          }
+        </div>
       )}
 
       {/* Edit Article Form */}

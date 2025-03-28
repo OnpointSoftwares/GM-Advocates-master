@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, NavLink } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { Activity, Users, BookOpen, MessageSquare, FileText, Settings } from "lucide-react";
 
-import Sidebar from "../components/Sidebar";
-import AdminNavbar from "../components/AdminNavbar";
+//import AdminNavbar from "../components/AdminNavbar";
 import Footer from "../components/Footer/Footer";
 import Articles from "../components/Articles";
 import TeamMembers from "../components/TeamMembers";
@@ -13,15 +13,18 @@ import PracticeAreas from "../components/ManagePracticeAreas";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [selectedSection, setSelectedSection] = useState(
-    localStorage.getItem("selectedSection") || "articles"
-  );
+  const location = useLocation();
   const [user, setUser] = useState(null);
   const [greeting, setGreeting] = useState("");
+  const [stats, setStats] = useState({
+    articles: 10,
+    teamMembers: 5,
+    practiceAreas: 7,
+    messages: 2,
+  });
 
   useEffect(() => {
-    document.title = `Admin | ${selectedSection.replace("-", " ")}`;
-
+    document.title = "Admin Dashboard";
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -32,98 +35,94 @@ const Dashboard = () => {
     try {
       const decoded = jwtDecode(token);
       setUser(decoded);
-      setGreeting(generateGreeting());
     } catch (error) {
       console.error("Error decoding token:", error);
       localStorage.removeItem("token");
       navigate("/login");
     }
-  }, [navigate, selectedSection]);
-
-  const handleSectionChange = (section) => {
-    setSelectedSection(section);
-    localStorage.setItem("selectedSection", section);
-  };
+  }, [navigate]);
 
   const generateGreeting = () => {
     const hour = new Date().getHours();
-    const dayOfWeek = new Date().toLocaleString("en-US", { weekday: "long" });
-
-    const greetings = {
-      Monday: ["New week, new goals! 🚀", "Happy Monday! Let's win today! 💼"],
-      Tuesday: ["Keep pushing! 🔥", "Success is built step by step! 💼"],
-      Wednesday: ["Midweek hustle! 💪", "You're halfway there! 🚀"],
-      Thursday: ["Almost the weekend! Keep going! 🔥", "Stay focused! 💼"],
-      Friday: ["Happy Friday! 🎉", "End the week with a bang! 🚀"],
-      Saturday: ["Weekend mode? Not yet! 💪", "Big rewards come from effort! 🔥"],
-      Sunday: ["Recharge & reflect! 🌟", "Plan great things for next week! 🚀"],
-    };
-
-    const timeBasedGreetings = {
-      morning: ["Good morning! ☀️", "Rise & shine! 🌅"],
-      afternoon: ["Good afternoon! 🌞", "Keep driving success! 🚀"],
-      evening: ["Good evening! 🌙", "Great job today! 🎯"],
-    };
-
-    const timeOfDay = hour < 12 ? "morning" : hour < 18 ? "afternoon" : "evening";
-
-    const randomDayGreeting =
-      greetings[dayOfWeek][Math.floor(Math.random() * greetings[dayOfWeek].length)];
-    const randomTimeGreeting =
-      timeBasedGreetings[timeOfDay][Math.floor(Math.random() * timeBasedGreetings[timeOfDay].length)];
-
-    return `${randomDayGreeting} ${randomTimeGreeting}`;
+    if (hour < 12) return "Good morning! ☀️";
+    if (hour < 18) return "Good afternoon! 🌞";
+    return "Good evening! 🌙";
   };
 
   const renderSection = () => {
-    switch (selectedSection) {
-      case "articles":
-        return <Articles />;
-      case "team-members":
-        return <TeamMembers />;
-      case "practice-areas":
-        return <PracticeAreas />;
-      case "system-users":
-        return <SystemUsers />;
-      case "reports":
-        return <Reports />;
-      default:
-        return <Articles />;
+    switch (location.pathname) {
+      case "/team-members": return <TeamMembers />;
+      case "/practice-areas": return <PracticeAreas />;
+      case "/system-users": return <SystemUsers />;
+      case "/reports": return <Reports />;
+      default: return <Articles />;
     }
   };
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
-      {/* Sidebar */}
-      <Sidebar
-        onNavigate={handleSectionChange}
-        activeSection={selectedSection}
-        className="w-full lg:w-1/4 xl:w-1/5"
-      />
+    <div className="min-h-screen bg-gray-100 text-gray-900">
+     
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col p-2 sm:p-4 pt-16"> {/* Added pt-16 to fix content overlapping */}
-        {/* Admin Navbar */}
-        <AdminNavbar />
+      <div className="flex min-h-screen">
+        {/* Sidebar */}
+        <aside className="w-64 bg-white shadow-lg fixed h-full p-6 hidden lg:block">
+          <nav className="space-y-4">
+            {[
+              { path: "/dashboard", name: "Articles", icon: FileText },
+              { path: "/team-members", name: "Team Members", icon: Users },
+              { path: "/practice-areas", name: "Practice Areas", icon: BookOpen },
+              { path: "/system-users", name: "System Users", icon: Settings },
+            ].map(({ path, name, icon: Icon }) => (
+              <NavLink
+                key={path}
+                to={path}
+                className={({ isActive }) =>
+                  `flex items-center space-x-3 p-3 rounded-lg transition-all ${
+                    isActive ? "bg-blue-500 text-white" : "hover:bg-gray-100"
+                  }`
+                }
+              >
+                <Icon className="w-5 h-5" />
+                <span>{name}</span>
+              </NavLink>
+            ))}
+          </nav>
+        </aside>
 
-        {/* User Greeting */}
-        {user && (
-          <div className="p-4 bg-white shadow-md rounded-md m-2 sm:m-4 text-center sm:text-left">
-            <h2 className="text-lg sm:text-xl font-bold text-gray-800">
-              <span className="text-blue-600">{user.username || "Admin"}!</span> {greeting} 👋
+        {/* Main Content */}
+        <main className="flex-1 p-8 lg:ml-64">
+          <div className="mb-6">
+            <h2 className="text-2xl font-semibold">
+              Welcome, <span className="text-blue-600">{user?.username || "Admin"}</span>!
             </h2>
+            <p className="text-gray-500">{greeting}</p>
           </div>
-        )}
-        
 
-        {/* Dashboard Section */}
-        <div className="flex-grow p-2 sm:p-4 bg-white rounded-md shadow-md overflow-auto">
-          {renderSection()}
-        </div>
+          {/* Stats */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {[
+              { name: "Articles", value: stats.articles, color: "bg-blue-500", icon: FileText },
+              { name: "Team Members", value: stats.teamMembers, color: "bg-green-500", icon: Users },
+              { name: "Practice Areas", value: stats.practiceAreas, color: "bg-purple-500", icon: BookOpen },
+              { name: "Messages", value: stats.messages, color: "bg-yellow-500", icon: MessageSquare },
+            ].map(({ name, value, color, icon: Icon }) => (
+              <div key={name} className={`p-6 rounded-lg shadow-md text-white ${color}`}>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="text-lg font-medium">{name}</p>
+                    <p className="text-3xl font-bold">{value}</p>
+                  </div>
+                  <Icon className="w-10 h-10 opacity-75" />
+                </div>
+              </div>
+            ))}
+          </div>
 
-        {/* Footer */}
-        <Footer />
+          {/* Content Section */}
+          <div className="bg-white rounded-lg p-6 shadow-lg">{renderSection()}</div>
+        </main>
       </div>
+  
     </div>
   );
 };

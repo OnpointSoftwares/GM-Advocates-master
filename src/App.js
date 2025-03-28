@@ -80,11 +80,10 @@ function App() {
 
           {/* 🔹 Admin Dashboard & Management */}
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/dashboard/articles" element={<Articles />} />
-          <Route path="/dashboard/team-members" element={<TeamMembers />} />
-          <Route path="/dashboard/system-users" element={<SystemUsers />} />
-          <Route path="/dashboard/reports" element={<Reports />} />
-
+<Route path="/dashboard/articles" element={<Articles />} />
+<Route path="/dashboard/team-members" element={<TeamMembers />} />
+<Route path="/dashboard/system-users" element={<SystemUsers />} />
+<Route path="/dashboard/reports" element={<Reports />} />
           {/* 🔹 Service Details Route (NEW) */}
           <Route path="/services/:id" element={<ServiceDetails />} />
         </Routes>

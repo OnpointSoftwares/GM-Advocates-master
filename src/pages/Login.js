@@ -34,36 +34,55 @@ const AuthLogin = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:5000/api/login", {
-        email,
-        password,
-      });
-
+      const response = await axios.post("https://home.gmorinaadvocates.org/api/login", { email, password });
+  
       if (!response || !response.data) {
         throw new Error("Unexpected server response. Please try again.");
       }
-
+  
       if (response.data.success) {
-        localStorage.setItem("token", response.data.token);
-
+        const { token } = response.data;
+  
+        if (!token) {
+          throw new Error("No token received. Please contact support.");
+        }
+  
+        // ✅ Store token securely
+        localStorage.setItem("token", token);
+  
+        // ✅ Decode the JWT token safely
         let tokenPayload;
         try {
-          tokenPayload = JSON.parse(atob(response.data.token.split(".")[1]));
-          if (!tokenPayload.username) {
+          const base64Payload = token.split(".")[1];
+          tokenPayload = JSON.parse(atob(base64Payload));
+  
+          if (!tokenPayload.username || !tokenPayload.exp) {
             throw new Error("Invalid token structure.");
           }
         } catch (error) {
+          console.error("Error decoding token:", error.message);
           setError("Invalid token received. Please contact support.");
           setLoading(false);
           return;
         }
-
+  
+        // ✅ Check if token is expired
+        const isTokenExpired = Date.now() >= tokenPayload.exp * 1000;
+        if (isTokenExpired) {
+          setError("Your session has expired. Please log in again.");
+          setLoading(false);
+          return;
+        }
+  
+        // ✅ Store user info & Redirect
         localStorage.setItem("username", tokenPayload.username);
         navigate("/dashboard");
       } else {
         setError(response.data.message || "Invalid credentials.");
       }
     } catch (err) {
+      console.error("Login error:", err);
+  
       if (err.response) {
         setError(err.response.data?.message || "Login failed. Please check your credentials.");
       } else if (err.request) {
@@ -75,6 +94,7 @@ const AuthLogin = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4 bg-[#dcdcdc]">
